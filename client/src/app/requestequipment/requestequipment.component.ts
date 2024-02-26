@@ -25,11 +25,11 @@ export class RequestequipmentComponent implements OnInit {
     private authService: AuthService
   ) {
     this.itemForm = this.formBuilder.group({
-      hospitalId: ['', Validators.required],
-      equipmentId: ['', Validators.required],
-      orderDate: ['', Validators.required],
+      hospitalId: ['', [Validators.required]],
+      equipmentId: ['', [Validators.required]],
+      orderDate: ['', [Validators.required]],
       quantity: ['', [Validators.required, Validators.min(1)]],
-      status: ['', Validators.required]
+      status: ['', [Validators.required]]
     });
   }
 

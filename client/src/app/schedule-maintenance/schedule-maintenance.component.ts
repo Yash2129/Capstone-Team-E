@@ -23,12 +23,12 @@ export class ScheduleMaintenanceComponent implements OnInit {
 
   constructor(public router: Router, public httpService: HttpService, private formBuilder: FormBuilder, private authService: AuthService) {
     this.itemForm = this.formBuilder.group({
-      hospitalId: ['', Validators.required],
-      equipmentId: ['', Validators.required],
-      scheduledDate: ['', Validators.required],
-      completedDate: ['', Validators.required],
-      description: ['', Validators.required],
-      status: ['', Validators.required]
+      hospitalId: ['', [Validators.required]],
+      equipmentId: ['', [Validators.required]],
+      scheduledDate: ['', [Validators.required]],
+      completedDate: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      status: ['', [Validators.required]]
     });
   }
 

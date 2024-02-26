@@ -24,11 +24,10 @@ export class MaintenanceComponent implements OnInit {
 
   constructor(public router: Router, public httpService: HttpService, private formBuilder: FormBuilder, private authService: AuthService) {
     this.itemForm = this.formBuilder.group({
-      maintenanceId: [''],
-      scheduledDate: ['', Validators.required],
-      completedDate: ['', Validators.required],
-      description: ['', Validators.required],
-      status: ['', Validators.required]
+      scheduledDate: ['', [Validators.required, this.dateValidator]],
+      completedDate: ['',[Validators.required, this.dateComparisonValidator(),this.dateValidator]],
+      description: ['', [Validators.required]],
+      status: ['', [Validators.required]]
     });
   }
 
@@ -38,7 +37,29 @@ export class MaintenanceComponent implements OnInit {
 
   dateValidator(control: AbstractControl): ValidationErrors | null {
     //complete this function
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/
+    if(!datePattern.test(control.value)) return {datePatternChecker:true};
     return null;
+  }
+
+  
+  //added
+  dateComparisonValidator() {
+    return (formGroup: FormGroup): { [key: string]: any } | null => {
+      const scheduledDate = formGroup.get('scheduledDate');
+      const completeDate = formGroup.get('completeDate');
+  
+      if (scheduledDate && completeDate && scheduledDate.value && completeDate.value) {
+        const scheduledDateValue = new Date(scheduledDate.value);
+        const completeDateValue = new Date(completeDate.value);
+  
+        if (scheduledDateValue > completeDateValue) {
+          return { dateComparison: true };
+        }
+      }
+  
+      return null;
+    };
   }
 
   getMaintenance() {
