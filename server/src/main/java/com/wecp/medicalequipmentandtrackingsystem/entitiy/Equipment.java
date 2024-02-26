@@ -1,17 +1,16 @@
 package com.wecp.medicalequipmentandtrackingsystem.entitiy;
 
+
 import javax.persistence.*;
 
-@Entity
+
 public class Equipment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
     private String name;
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)   //Child and parent load simultaneously
     private Hospital hospital;
 
     public Long getId() {

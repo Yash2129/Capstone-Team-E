@@ -2,14 +2,10 @@ package com.wecp.medicalequipmentandtrackingsystem.entitiy;
 
 
 import javax.persistence.*;
-
-
 import java.util.Date;
 
-@Entity
+
 public class Orders {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Date orderDate;
@@ -17,7 +13,6 @@ public class Orders {
 
     private int quantity;
 
-    @ManyToOne(fetch = FetchType.EAGER)
     private Equipment equipment; 
 
     public Long getId() {

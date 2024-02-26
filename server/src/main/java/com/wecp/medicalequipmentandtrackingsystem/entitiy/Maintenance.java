@@ -1,39 +1,20 @@
 package com.wecp.medicalequipmentandtrackingsystem.entitiy;
- 
- 
+
+
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-public class Maintenance {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
- 
-    private Date scheduledDate;
-    
 
+public class Maintenance {
+    private Long id;
+
+    private Date scheduledDate;
     private Date completedDate;
     private String description;
- 
+
     private String status;
- 
-    @ManyToOne(fetch = FetchType.EAGER)
+
     private Equipment equipment;
-
-
-    public Maintenance() {
-    }
-
-    public Maintenance(Long id, Date scheduledDate, Date completedDate, String description, String status,
-            Equipment equipment) {
-        this.id = id;
-        this.scheduledDate = scheduledDate;
-        this.completedDate = completedDate;
-        this.description = description;
-        this.status = status;
-        this.equipment = equipment;
-    }
 
     public Long getId() {
         return id;
@@ -67,14 +48,6 @@ public class Maintenance {
         this.description = description;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Equipment getEquipment() {
         return equipment;
     }
@@ -82,6 +55,12 @@ public class Maintenance {
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }
- 
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
- 
