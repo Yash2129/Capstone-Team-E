@@ -1,0 +1,50 @@
+<div class="vh-100 d-flex justify-content-center align-items-center">
+  <div class="container">
+    <div class="row d-flex justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div class="border border-3 border-primary"></div>
+        <div class="card bg-white">
+          <div class="card-body p-5">
+            <form class="mb-3 mt-md-4" [formGroup]="itemForm" (ngSubmit)="onLogin()">
+              <h2 class="fw-bold mb-2 text-uppercase ">Logistic Management System</h2>
+              <p class=" mb-5">Please enter your user and password!</p>
+              <div class="mb-3">
+                <label for="username" class="form-label ">Username</label>
+                <!-- //create input with formControlName username -->
+                <input type="text" name="username" formControlName="username">
+                <div
+                  *ngIf="itemForm.get('username')?.invalid && (itemForm.get('username')?.dirty || itemForm.get('username')?.touched)"
+                  class="ng-dirty">
+                  <span class="text-danger">Username Invalid.</span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label ">Password</label>
+                <input type="password" name="password" formControlName="password">
+                <div
+                  *ngIf="itemForm.get('password')?.invalid && (itemForm.get('password')?.dirty || itemForm.get('password')?.touched)"
+                  class="ng-dirty">
+                  <span class="text-danger">Password Invalid.</span>
+                </div>
+                <!-- //create input with formControlName password -->
+
+              </div>
+
+              <div class="d-grid">
+                <button class="btn btn-outline-dark" type="submit">Login</button>
+              </div>
+            </form>
+            <div>
+              <p class="mb-0  text-center">Don't have an account? <a (click)="registration()"
+                  class="text-primary fw-bold">Registration</a></p>
+            </div>
+            <div *ngIf="showError" class="alert alert-danger" role="alert">
+              {{errorMessage}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

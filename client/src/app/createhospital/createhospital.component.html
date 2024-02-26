@@ -1,0 +1,131 @@
+<div class="d-flex justify-content-between mt-4">
+  <h2 class="mb-0">Manage Hospital</h2>
+</div>
+<div class="row mt-3">
+  <div class="card">
+    <div class="card-header">
+      Add Hospital
+    </div>
+    <div class="card-body">
+      <form class="mb-3 mt-md-4" [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="mb-3">
+              <label for="hospitalName" class="form-label ">Name</label>
+              <input type="text" name="hospitalName" formControlName="hospitalName" class="form-control"
+                id="hospitalName" placeholder="Hospital Name">
+              <div
+                *ngIf="itemForm.controls['hospitalName'].invalid && (itemForm.controls['hospitalName'].dirty || itemForm.controls['hospitalName'].touched)"
+                class="ng-dirty">
+                <span class="text-danger">Please Enter Hospital Name.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="mb-3">
+              <label for="location" class="form-label ">Location</label>
+              <input type="text" name="location" formControlName="location" class="form-control" id="location"
+                placeholder="Location">
+              <div
+                *ngIf="itemForm.controls['location'].invalid && (itemForm.controls['location'].dirty || itemForm.controls['location'].touched)"
+                class="ng-dirty">
+                <span class="text-danger">Please Enter Location.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="d-grid">
+              <br>
+              <button class="btn btn-outline-dark mt-1" type="submit">Submit</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="card">
+    <div class="card-header">Hospital Information</div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Sr#</th>
+            <th>Hospital Name</th>
+            <th>Location</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hospital of hospitalList">
+            <td>{{hospital.id}}</td>
+            <td>{{hospital.name}}</td>
+            <td>{{hospital.location}}</td>
+            <td>
+              <button data-bs-toggle="modal" (click)="Addequipment(hospital)" data-bs-target="#driverModal"
+                class="btn btn-primary">Assign Equipments</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="driverModal" tabindex="-1" aria-labelledby="driverModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="driverModalLabel">Assign Equipment </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="mb-3 mt-md-4" [formGroup]="equipmentForm" (ngSubmit)="submitEquipment()">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="mb-3">
+                <input type="hidden" name="hospitalId" id="hospitalId" formControlName="hospitalId">
+                <label for="equipmentName" class="form-label ">Name</label>
+                <input type="text" name="equipmentName" formControlName="equipmentName"
+                  ngModel="formModel.equipmentName" class="form-control" id="equipmentName"
+                  placeholder="Equipment Name">
+                <div
+                  *ngIf="equipmentForm.controls['equipmentName'].invalid && (equipmentForm.controls['equipmentName'].dirty || equipmentForm.controls['equipmentName'].touched)"
+                  class="ng-dirty">
+                  <span class="text-danger">Please Enter Equipment Name.</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label for="quantity" class="form-label ">Quantity</label>
+                  <input type="number" name="quantity" formControlName="quantity" ngModel="formModel.quantity"
+                    class="form-control" id="quantity" placeholder="Quantity">
+                  <div
+                    *ngIf="equipmentForm.controls['quantity'].invalid && (equipmentForm.controls['quantity'].dirty || equipmentForm.controls['quantity'].touched)"
+                    class="ng-dirty">
+                    <span class="text-danger">Please Enter Quantity.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="showMessage" class="alert alert-success mt-4" role="alert">
+            {{responseMessage}}
+          </div>
+          <div *ngIf="showError" class="alert alert-danger" role="alert">
+            {{errorMessage}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

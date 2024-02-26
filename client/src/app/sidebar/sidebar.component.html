@@ -1,0 +1,50 @@
+<div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Medical Application</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li>
+                <a href="#">Create Hospital</a>
+            </li>
+            <li>
+                <a href="#">Shedule Maintenance</a>
+            </li>
+            <li>
+                <a href="#">Request Equipment</a>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled CTAs">
+            <li>
+                <a href="#" class="logout" style="font-weight: 400;">LOGOUT</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="navbar-btn" (click)="isOpen=!isOpen">
+                    <img *ngIf="isOpen" src="./assets/left_arrow.png" style="width:40px; height:40px">
+                    <img *ngIf="!isOpen" src="./assets/right_arrow.png" style="width:40px; height:40px">
+                </button>
+
+                <div><h5 class="dashboard">Dashboard</h5></div>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <!-- <a style="color:#ffff" href="#">UserName</a> -->
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        
+    </div>
+</div>
