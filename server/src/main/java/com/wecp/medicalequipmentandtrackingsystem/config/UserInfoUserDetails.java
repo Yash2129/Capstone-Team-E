@@ -18,7 +18,6 @@ public class UserInfoUserDetails implements UserDetails {
     private String password;
     private List<GrantedAuthority> authorities;
 
-    //
     public UserInfoUserDetails(User userInfo) {
         name=userInfo.getUsername();
         password=userInfo.getPassword();

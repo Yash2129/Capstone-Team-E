@@ -17,13 +17,13 @@ public class SupplierController {
 
     @GetMapping("/api/supplier/orders")
     public ResponseEntity<List<Orders>> getAllOrders() {
-        // get all order and return it status code 200 OK
-        return new ResponseEntity<List<Orders>>(orderService.getAllOrders(),HttpStatus.OK);
+        List<Orders> orders = orderService.getAllOrders();
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @PutMapping("/api/supplier/order/update/{orderId}")
     public ResponseEntity<Orders> updateOrderStatus(@PathVariable Long orderId, @RequestParam String newStatus) {
-        // update order status and return updated order with status code 200 OK
-        return new ResponseEntity<Orders>(orderService.updateOrderStatus(orderId, newStatus),HttpStatus.OK);
+        Orders updatedOrder = orderService.updateOrderStatus(orderId, newStatus);
+        return new ResponseEntity<>(updatedOrder, HttpStatus.OK);
     }
 }

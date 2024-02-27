@@ -1,13 +1,10 @@
 package com.wecp.medicalequipmentandtrackingsystem.entitiy;
 
+
 import javax.persistence.*;
-import lombok.*;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@Table(name = "equipments")
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +12,9 @@ public class Equipment {
 
     private String name;
     private String description;
-
-    @ManyToOne(fetch = FetchType.EAGER)   //Child and parent load simultaneously
-    private Hospital hospital;
+    @ManyToOne
+    @JoinColumn(name = "hospitalId")
+    private Hospital hospital; // Many equipment can belong to one hospital
 
     public Long getId() {
         return id;

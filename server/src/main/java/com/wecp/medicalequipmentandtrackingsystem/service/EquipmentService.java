@@ -9,31 +9,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.*;
+import java.util.List;
 
 @Service
 public class EquipmentService {
 
     @Autowired
     private EquipmentRepository equipmentRepository;
+
     @Autowired
     private HospitalRepository hospitalRepository;
 
     public Equipment addEquipment(Long hospitalId, Equipment equipment) {
-        // check if hospital exists
-        // add equipment to hospital
-        Optional<Hospital> hospitals=hospitalRepository.findById(hospitalId);
-        if(!hospitals.isPresent()){
+        // Check if the hospital with the given ID exists
+        Hospital hospital = hospitalRepository.findById(hospitalId)
+                .orElseThrow(() -> new EntityNotFoundException("Hospital not found with ID: " + hospitalId));
+
+        // Set the hospital for the equipment
+        equipment.setHospital(hospital);
         return equipmentRepository.save(equipment);
-        }else{
-            return null;
-        }
     }
 
     public List<Equipment> getAllEquipmentOfHospital(Long hospitalId) {
-        // return all equipments of hospital
-        return null;
+        return equipmentRepository.findByHospitalId(hospitalId);
     }
-
-    
 }
