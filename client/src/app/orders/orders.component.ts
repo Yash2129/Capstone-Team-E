@@ -11,71 +11,60 @@ import { AuthService } from '../../services/auth.service';
 })
 export class OrdersComponent implements OnInit {
 
-  showError:boolean=false;
-  errorMessage:any;
-  showMessage: any;
-  responseMessage: any;
-  orderList: any=[];
-  statusModel:any={newStatus:null}
+ 
+   showError:boolean=false;
+   errorMessage:any;
 
-  constructor(
-    public router:Router, 
-    public httpService:HttpService, 
-    private formBuilder: FormBuilder, 
-    private authService:AuthService
-  ) {}
+   showMessage: any;
+   responseMessage: any;
+   orderList: any=[];
 
-  ngOnInit(): void {
-    this.getOrders(); // Call getOrders function when component initializes
-  }
-
-  getOrders() {
-    this.httpService.getorders().subscribe(
-      (response: any) => {
-        // Handle successful response
-        this.orderList = response; // Assign response data to orderList
-      },
-      (error: any) => {
-        // Handle error
-        this.showError = true;
-        this.errorMessage = error.message || 'An error occurred while fetching orders.';
-      }
-    );
-  }
-
-  viewDetails(details:any) {
-    // complete this function
-  }
-
-  edit(order:any) {
-    // complete this function
-    console.log('Edit order:', order);
-  }
-
-  update() {
-    const orderIdToUpdate = 'your_order_id_here'; // Specify the order ID you want to update
-    const newStatus = this.statusModel.newStatus;
-
-    if (!newStatus) {
-      this.showError = true;
-      this.errorMessage = 'Please provide a new status.';
-      return;
-    }
-
-    this.httpService.UpdateOrderStatus(newStatus, orderIdToUpdate).subscribe(
-      (response: any) => {
-        // Handle successful response
-        this.responseMessage = response.message || 'Order status updated successfully.';
+   statusModel:any={newStatus:null}
+   constructor(public router:Router, public httpService:HttpService, private formBuilder: FormBuilder, private authService:AuthService) 
+  {
+  }  
+ ngOnInit(): void {
+   this.getOrders();
+   }  
+ 
+   getOrders() {
+     this.orderList=[];
+     this.httpService.getorders().subscribe((data: any) => {
+       this.orderList=data;
+      console.log(data)
+     }, error => {
+       // Handle error
+       this.showError = true;
+       this.errorMessage = "An error occurred while logging in. Please try again later.";
+       console.error('Login error:', error);
+     });;
+   }
+   viewDetails(details:any)
+   {
+    
+   }
+   edit(value:any)
+   {
+    this.statusModel.cargoId=value.id
+   }
+   update()
+   {
+    if(this.statusModel.newStatus!=null)
+    {
+      this.showMessage = false;
+      this.httpService.UpdateOrderStatus(this.statusModel.newStatus,this.statusModel.cargoId).subscribe((data: any) => {
+        debugger;
         this.showMessage = true;
-        this.getOrders(); // Refresh the order list after update
-      },
-      (error: any) => {
+        this.responseMessage=`Status updated`;
+        this.getOrders();
+      }, error => {
         // Handle error
         this.showError = true;
-        this.errorMessage = error.message || 'An error occurred while updating order status.';
-      }
-    );
-  }
-}
+        this.errorMessage = "An error occurred while logging in. Please try again later.";
+        console.error('Login error:', error);
+      });;
+    }
+   }
+ }
  
  

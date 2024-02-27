@@ -14,9 +14,7 @@ import { RequestequipmentComponent } from './requestequipment/requestequipment.c
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { OrdersComponent } from './orders/orders.component';
 
-
 const routes: Routes = [
- 
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
   { path: 'dashboard', component: DashbaordComponent },
@@ -25,7 +23,8 @@ const routes: Routes = [
   { path: 'requestequipment', component: RequestequipmentComponent },  
   { path: 'maintenance', component: MaintenanceComponent },  
   { path: 'orders', component: OrdersComponent },  
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+
   { path: '**', redirectTo: '/dashboard', pathMatch: 'full' },
 ];
 

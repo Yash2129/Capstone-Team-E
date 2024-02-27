@@ -6,54 +6,50 @@ import { HttpService } from '../../services/http.service';
 
 @Component({
   selector: 'app-registration',
-  templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+  templateUrl: './registration.component.html'
+ 
 })
 export class RegistrationComponent {
 
   itemForm: FormGroup;
-  formModel: any = { role: null, email: '', password: '', username: '' };
-  showMessage: boolean = false;
+  formModel:any={role:null,email:'',password:'',username:''};
+  showMessage:boolean=false;
 
   responseMessage: any;
-  constructor(public router: Router, private bookService: HttpService, private formBuilder: FormBuilder) {
-
-    this.itemForm = this.formBuilder.group({
-      //complete this function 
-      username: [this.formModel.username, Validators.required],
-      password: [this.formModel.password, Validators.required],
-      email: [this.formModel.email, Validators.required],
-      role: [this.formModel.role, Validators.required]
-
+  constructor(public router:Router, private bookService:HttpService, private formBuilder: FormBuilder) { 
+    
+      this.itemForm = this.formBuilder.group({
+        email: [this.formModel.email,[ Validators.required, Validators.email]],
+        password: [this.formModel.password,[ Validators.required]],
+        role: [this.formModel.role,[ Validators.required]],
+        username: [this.formModel.username,[ Validators.required]],
+       
     });
   }
 
   ngOnInit(): void {
   }
-
-
-  onRegister() {
-    
-  //   if (this.itemForm.invalid) {
-  //     this.showMessage = true;
-  //     this.responseMessage = 'Please fill all the required fields correctly.';
-  //     return;
-  //   }
-
-  //   // Call the service to register the user
-    this.bookService.registerUser(this.itemForm.value).subscribe(
-      (response: any) => {
-        this.showMessage = true;
-        this.responseMessage = response.message || 'Registration successful.';
+  onRegister()
+  {
+    if(this.itemForm.valid)
+    {
+      this.showMessage=false;
+      this.bookService.registerUser(this.itemForm.value).subscribe(data=>{    
+        debugger;
+        this.showMessage=true;
+        this.responseMessage='Welcome '+data.username+" you are successfully registered";
+        this.itemForm.reset();
+        
       },
       (error: any) => {
         this.showMessage = true;
         this.responseMessage = 'An error occurred while registering.';
-      }
-    );
-  
-  console.log(this.itemForm.value);
-   }
+      })
+    }
+    else{
+      this.itemForm.markAllAsTouched();
+    }
+  }
 
 
 }

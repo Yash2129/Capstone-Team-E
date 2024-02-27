@@ -11,89 +11,98 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./maintenance.component.scss']
 })
 export class MaintenanceComponent implements OnInit {
-  formModel: any = { status: null };
-  showError: boolean = false;
-  errorMessage: any;
-  hospitalList: any = [];
-  assignModel: any = {};
+  // itemForm: FormGroup;
+  formModel:any={status:null};
+  showError:boolean=false;
+  errorMessage:any;
+  hospitalList:any=[];
+  assignModel: any={};
   itemForm: FormGroup;
   showMessage: any;
   responseMessage: any;
-  maintenanceList: any = [];
-  maintenanceObj: any = {};
-
-  constructor(public router: Router, public httpService: HttpService, private formBuilder: FormBuilder, private authService: AuthService) {
-    this.itemForm = this.formBuilder.group({
-      scheduledDate: ['', [Validators.required, this.dateValidator]],
-      completedDate: ['',[Validators.required, this.dateComparisonValidator(),this.dateValidator]],
-      description: ['', [Validators.required]],
-      status: ['', [Validators.required]]
+  maintenanceList: any=[];
+  maintenanceObj: any={};
+  constructor(public router:Router, public httpService:HttpService, private formBuilder: FormBuilder, private authService:AuthService) 
+    {
+      this.itemForm = this.formBuilder.group({
+        scheduledDate: [this.formModel.scheduledDate,[ Validators.required, this.dateValidator]],
+        completedDate: [this.formModel.completedDate,[ Validators.required, this.dateValidator]],
+        description: [this.formModel.description,[ Validators.required]], 
+        status: [this.formModel.status,[ Validators.required]], 
+        maintenanceId: [this.formModel.maintenanceId],
+ 
+       
     });
-  }
 
-  ngOnInit(): void {
-    this.getMaintenance();
-  }
 
+
+}  
+ngOnInit(): void {
+  this.getMaintenance();
+  }  
   dateValidator(control: AbstractControl): ValidationErrors | null {
-    //complete this function
-    const datePattern = /^\d{4}-\d{2}-\d{2}$/
-    if(!datePattern.test(control.value)) return {datePatternChecker:true};
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+
+    if (!datePattern.test(control.value)) {
+      return { invalidDate: true };
+    }
+
     return null;
   }
-
-  
-  //added
-  dateComparisonValidator() {
-    return (formGroup: FormGroup): { [key: string]: any } | null => {
-      const scheduledDate = formGroup.get('scheduledDate');
-      const completeDate = formGroup.get('completeDate');
-  
-      if (scheduledDate && completeDate && scheduledDate.value && completeDate.value) {
-        const scheduledDateValue = new Date(scheduledDate.value);
-        const completeDateValue = new Date(completeDate.value);
-  
-        if (scheduledDateValue > completeDateValue) {
-          return { dateComparison: true };
-        }
-      }
-  
-      return null;
-    };
-  }
-
   getMaintenance() {
-    this.httpService.getMaintenance().subscribe(
-      (data) => {
-        this.maintenanceList = data;
-      },
-      (error) => {
-        console.error('Error fetching maintenance data:', error);
+    this.maintenanceList=[];
+    this.httpService.getMaintenance().subscribe((data: any) => {
+      this.maintenanceList=data;
+     console.log(data)
+    }, error => {
+      // Handle error
+      this.showError = true;
+      this.errorMessage = "An error occurred while logging in. Please try again later.";
+      console.error('Login error:', error);
+    });;
+  }
+  viewDetails(details:any)
+  {
+    debugger;
+    this.maintenanceObj={};
+    this.maintenanceObj=details.equipment;
+  }
+  edit(val:any)
+  {
+    const scheduledDate =new Date(val.scheduledDate); // Convert string to Date object
+    const completedDate =new Date(val.completedDate); // Convert string to Date object
+    this.itemForm.patchValue({
+      scheduledDate:  scheduledDate.toISOString().substring(0, 10),
+      completedDate: completedDate.toISOString().substring(0, 10),
+      description: val.description,
+      status: val.status,
+      equipmentId: val.equipmentId,
+      maintenanceId:val.id
+  });
+  }
+  update()
+  {
+    if(this.itemForm.valid)
+    {
+      if (this.itemForm.valid) {
+        this.showError = false;
+        this.httpService.updateMaintenance(this.itemForm.value,this.itemForm.controls['maintenanceId'].value).subscribe((data: any) => {
+          this.itemForm.reset();
+      
+          window.location.reload();
+        }, error => {
+          // Handle error
+          this.showError = true;
+          this.errorMessage = "An error occurred while logging in. Please try again later.";
+          console.error('Login error:', error);
+        });;
+      } else {
+        this.itemForm.markAllAsTouched();
       }
-    );
-  }
-
-  viewDetails(details: any) {
-    //complete this function
-  }
-
-  edit(val: any) {
-    //complete this function
-  }
-
-  update() {
-    this.httpService.updateMaintenance(this.itemForm.value, this.itemForm.value.maintenanceId).subscribe(
-      (data) => {
-        this.responseMessage = 'Maintenance updated successfully.';
-        this.showMessage = true;
-        // Refresh maintenance list
-        this.getMaintenance();
-      },
-      (error) => {
-        console.error('Error updating maintenance:', error);
-        this.responseMessage = 'Error updating maintenance.';
-        this.showMessage = true;
-      }
-    );
+    }
+    else{
+      this.itemForm.markAllAsTouched();
+    }
   }
 }
+
