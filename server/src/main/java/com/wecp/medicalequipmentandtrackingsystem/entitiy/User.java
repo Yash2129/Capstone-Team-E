@@ -4,6 +4,7 @@ package com.wecp.medicalequipmentandtrackingsystem.entitiy;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,18 +14,6 @@ public class User {
     private String password;
     private String email;
     private String role; // HOSPITAL, TECHNICIAN, SUPPLIER
-
-    public User() {
-    }
-    
-
-    public User(String username, String password, String email, String role) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-    }
-
 
     public Long getId() {
         return id;

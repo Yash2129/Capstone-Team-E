@@ -1,43 +1,84 @@
-// package com.wecp.medicalequipmentandtrackingsystem.jwt;
+package com.wecp.medicalequipmentandtrackingsystem.jwt;
 
 
-// import com.wecp.medicalequipmentandtrackingsystem.entitiy.User;
-// import com.wecp.medicalequipmentandtrackingsystem.repository.UserRepository;
-// import io.jsonwebtoken.Claims;
-// import io.jsonwebtoken.Jwts;
-// import io.jsonwebtoken.SignatureAlgorithm;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.core.userdetails.UserDetails;
-// import org.springframework.stereotype.Component;
+import com.wecp.medicalequipmentandtrackingsystem.entitiy.User;
+import com.wecp.medicalequipmentandtrackingsystem.repository.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
-// import java.util.Date;
-// import java.util.HashMap;
-// import java.util.Map;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-// public class JwtUtil {
+@Component
+public class JwtUtil {
 
-//     public String generateToken(String username) {
-//         // generate jwt token
-//         return null;
-//     }
+    private UserRepository userRepository;
 
-//     public Claims extractAllClaims(String token) {
-//         // extract all claims from token
-//         return null;
-//     }
+    @Autowired
+    public JwtUtil(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-//     public String extractUsername(String token) {
-//         // extract username from token
-//         return null;
-//     }
+    private final String secret = "secretKey000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 
-//     public boolean isTokenExpired(String token) {
-//        // check if token is expired
-//        return false;
-//     }
+    private final int expiration = 86400;
 
-//     public boolean validateToken(String token, UserDetails userDetails) {
-//         // validate token
-//         return false;
-//     }
-// }
+    public String generateToken(String username) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + expiration * 1000);
+        User user = userRepository.findByUsername(username).get();
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", username);
+
+        // Assign role based on user type
+        claims.put("role", user.getRole());
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
+    public Claims extractAllClaims(String token) {
+        Claims claims;
+        try {
+            claims = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            claims = null;
+        }
+        return claims;
+    }
+
+    public String extractUsername(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
+
+    public boolean isTokenExpired(String token) {
+        Date expirationDate = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+        return expirationDate.before(new Date());
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+}

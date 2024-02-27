@@ -1,70 +1,99 @@
-// package com.wecp.medicalequipmentandtrackingsystem.config;
-
-// import com.wecp.medicalequipmentandtrackingsystem.jwt.JwtRequestFilter;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.context.annotation.Bean;
-// import org.springframework.context.annotation.Configuration;
-// import org.springframework.http.HttpMethod;
-// import org.springframework.security.authentication.AuthenticationManager;
-// import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-// import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-// import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-// import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-// import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-// import org.springframework.security.config.http.SessionCreationPolicy;
-// import org.springframework.security.core.userdetails.UserDetailsService;
-// import org.springframework.security.crypto.password.PasswordEncoder;
-// import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-// @Configuration
-// @EnableWebSecurity
-// @EnableGlobalMethodSecurity(prePostEnabled = true)
-// public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//     private final UserDetailsService userDetailsService;
-//     private final JwtRequestFilter jwtRequestFilter;
-//     private final PasswordEncoder passwordEncoder;
-
-//     @Autowired
-//     public SecurityConfig(UserDetailsService userDetailsService,
-//                           JwtRequestFilter jwtRequestFilter,
-//                           PasswordEncoder passwordEncoder) {
-//         this.userDetailsService = userDetailsService;
-//         this.jwtRequestFilter = jwtRequestFilter;
-//         this.passwordEncoder = passwordEncoder;
-//     }
+package com.wecp.medicalequipmentandtrackingsystem.config;
 
 
-//     @Override
-//     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-//     }
+import com.wecp.medicalequipmentandtrackingsystem.jwt.JwtRequestFilter;
+import com.wecp.medicalequipmentandtrackingsystem.service.UserService;
 
-//     @Override
-//     protected void configure(HttpSecurity http) throws Exception {
-//         // http.cors().and().csrf().disable()
-//         //         .authorizeRequests()
-//         //         .antMatchers("/customer/register", "/customer/login").permitAll()
-//         //         .antMatchers(HttpMethod.GET, "/customers/**").hasAnyAuthority("USER", "ADMIN")
-//         //         .antMatchers(HttpMethod.POST, "/customers/**").hasAuthority("ADMIN")
-//         //         .antMatchers(HttpMethod.PUT, "/customers/**").hasAuthority("ADMIN")
-//         //         .antMatchers(HttpMethod.DELETE, "/customers/**").hasAuthority("ADMIN")
-//         //         .antMatchers(HttpMethod.GET, "/accounts/**").hasAnyAuthority("USER", "ADMIN") // Repeat for accounts
-//         //         .antMatchers(HttpMethod.POST, "/accounts/**").hasAuthority("ADMIN")
-//         //         .antMatchers(HttpMethod.PUT, "/accounts/**").hasAuthority("ADMIN")
-//         //         .antMatchers(HttpMethod.DELETE, "/accounts/**").hasAuthority("ADMIN")
-//         //         .antMatchers("/credit-cards/**").hasAnyAuthority( "ADMIN")
-//         //         .antMatchers("/loans/**").hasAnyAuthority( "ADMIN")
-//         //         .antMatchers("/transactions/**").hasAnyAuthority("USER", "ADMIN")
-//         //         .anyRequest().authenticated()
-//         //         .and()
-//         //         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+import javax.servlet.http.HttpServletRequest;
 
-//         // http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-//     }
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
-//     @Bean
-//     @Override
-//     public AuthenticationManager authenticationManagerBean() throws Exception {
-//         return super.authenticationManagerBean();
-//     }
-// }
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+public class SecurityConfig {
+    @Autowired
+    private JwtRequestFilter authFilter;
+
+    @Bean
+    //authentication
+    public UserDetailsService userDetailsService() {
+        return new UserService();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf().disable()
+        
+
+           
+        .authorizeRequests()
+            .requestMatchers(new CustomRequestMatcher("/api/user", "/api/user/login","/api/user/register","/api/hospital/create","/api/hospital/equipment")).permitAll()
+            .requestMatchers(new CustomRequestMatcher("/api/**")).authenticated()
+        .and()
+        .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authenticationProvider(authenticationProvider())
+        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
+    }
+
+    
+    @Bean
+    public PasswordEncoder passwordEncoders() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoders());
+        return authenticationProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+
+
+    private static class CustomRequestMatcher implements RequestMatcher {
+        private String[] patterns;
+
+        public CustomRequestMatcher(String... patterns) {
+            this.patterns = patterns;
+        }
+
+        @Override
+        public boolean matches(HttpServletRequest request) {
+            // TODO Auto-generated method stub
+            String requestURI = request.getRequestURI();
+            for (String pattern : patterns) {
+                if (requestURI.matches(pattern)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+}

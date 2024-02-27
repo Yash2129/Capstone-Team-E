@@ -10,43 +10,41 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MaintenanceService {
+
     @Autowired
     private MaintenanceRepository maintenanceRepository;
+
+    @Autowired
     private EquipmentRepository equipmentRepository;
+
+
     public List<Maintenance> getAllMaintenance() {
-        // get all maintenance records
         return maintenanceRepository.findAll();
     }
 
     public Maintenance scheduleMaintenance(Long equipmentId, Maintenance maintenance) {
-        // Check if the equipment with the given ID exists
-        // schedule maintenance for the equipment
-        Optional<Equipment> equipments = equipmentRepository.findById(equipmentId);
-        if (equipments.isPresent()) {
-           // return accounts.get();
-         maintenanceRepository.save(maintenance);
-         return maintenance;
+        Equipment equipment = equipmentRepository.findById(equipmentId)
+                .orElseThrow(() -> new EntityNotFoundException("Equipment not found with ID: " + equipmentId));
 
-        }
-        else {
-            return null;
-           // throw new AccountNotFoundException("No accounts found linked with this accountId");
-        }
+        // Set the equipment for the maintenance task
+        maintenance.setEquipment(equipment);
+
+        return maintenanceRepository.save(maintenance);
     }
 
 
     public Maintenance updateMaintenance(Long maintenanceId, Maintenance updatedMaintenance) {
         // Check if the maintenance record with the given ID exists
-        Optional<Maintenance> maintenance = maintenanceRepository.findById(maintenanceId);
-        if (maintenance.isPresent()) {
-         
-         return maintenanceRepository.save(updatedMaintenance);
+        Maintenance existingMaintenance = maintenanceRepository.findById(maintenanceId)
+                .orElseThrow(() -> new EntityNotFoundException("Maintenance record not found with ID: " + maintenanceId));
 
-        }else{return null;}
-        // update maintenance record
+        updatedMaintenance.setId(existingMaintenance.getId());
+        updatedMaintenance.setEquipment(existingMaintenance.getEquipment());
+
+        // Save the updated maintenance record
+        return maintenanceRepository.save(updatedMaintenance);
     }
 }

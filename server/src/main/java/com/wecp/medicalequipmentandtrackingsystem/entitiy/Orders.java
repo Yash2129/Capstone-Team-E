@@ -2,16 +2,10 @@ package com.wecp.medicalequipmentandtrackingsystem.entitiy;
 
 
 import javax.persistence.*;
-
-import lombok.*;
-
 import java.util.Date;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter 
+@Table(name = "orders")
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +16,9 @@ public class Orders {
 
     private int quantity;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Equipment equipment; 
+    @ManyToOne
+    @JoinColumn(name = "equipment_id")
+    private Equipment equipment; // Many orders can be associated with one equipment
 
     public Long getId() {
         return id;

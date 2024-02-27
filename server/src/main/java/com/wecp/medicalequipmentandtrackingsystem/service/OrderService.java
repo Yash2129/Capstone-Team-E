@@ -15,32 +15,38 @@ import java.util.List;
 @Service
 public class OrderService {
 
-
-
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+
     public Orders placeOrder(Long equipmentId, Orders order) {
         // Check if the equipment with the given ID exists
-        // place order for the equipment
-        Orders fetchedOrder = orderRepository.findById(equipmentId).get();
-        if(fetchedOrder!=null){
-            return fetchedOrder;
-        }
-        return null;
+        Equipment equipment = equipmentRepository.findById(equipmentId)
+                .orElseThrow(() -> new EntityNotFoundException("Equipment not found with ID: " + equipmentId));
+
+        order.setEquipment(equipment);
+        order.setOrderDate(new Date());
+        order.setStatus("Initiated");
+
+        // Save the order
+        return orderRepository.save(order);
     }
 
     public List<Orders> getAllOrders() {
-        // return all orders
         return orderRepository.findAll();
     }
 
     public Orders updateOrderStatus(Long orderId, String newStatus) {
-       // update order status
-       Orders order = orderRepository.findById(orderId).get();
-        if (order !=null) {
-         order.setStatus(newStatus);
-         return orderRepository.save(order);
+        // Check if the order with the given ID exists
+        Orders existingOrder = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + orderId));
 
-        }else{return null;}
+        // Update the order status
+        existingOrder.setStatus(newStatus);
+
+        // Save the updated order
+        return orderRepository.save(existingOrder);
     }
 }
