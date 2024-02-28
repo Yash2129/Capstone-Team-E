@@ -39,14 +39,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
             .authorizeRequests()
-            .antMatchers(HttpMethod.POST,"/api/user/login","/api/user/register").permitAll()
-            .antMatchers(HttpMethod.POST,"/api/hospital/create",
-            "/api/hospital/equipment",
-            "/api/hospital/maintenance/schedule",
-            "/api/hospital/order").hasAuthority("HOSPITAL")
-            .antMatchers(HttpMethod.GET,"/api/hospital/equipment",
-            "/api/hospital/equipment/**",
-            "/api/hospitals").hasAuthority("HOSPITAL")
+            .antMatchers("/api/user/login").permitAll()
+            .antMatchers("/api/user/register").permitAll()
+            .antMatchers(HttpMethod.POST,"/api/hospital/create").hasAuthority("HOSPITAL")
+            .antMatchers(HttpMethod.POST,"/api/hospital/equipment").hasAuthority("HOSPITAL")
+            .antMatchers(HttpMethod.POST,"/api/hospital/maintenance/schedule").hasAuthority("HOSPITAL")
+            .antMatchers(HttpMethod.POST,"/api/hospital/order").hasAuthority("HOSPITAL")
+            .antMatchers(HttpMethod.GET,"/api/hospital/equipment").hasAuthority("HOSPITAL")
+            .antMatchers(HttpMethod.GET,"/api/hospital/equipment/**").hasAuthority("HOSPITAL")
+            .antMatchers(HttpMethod.GET,"/api/hospitals").hasAuthority("HOSPITAL")
             .antMatchers(HttpMethod.GET,"/api/technician/maintenance").hasAuthority("TECHNICIAN")
             .antMatchers(HttpMethod.PUT,"/api/technician/maintenance/update/**").hasAuthority("TECHNICIAN")
             .antMatchers(HttpMethod.GET,"/api/supplier/orders").hasAuthority("SUPPLIER")
