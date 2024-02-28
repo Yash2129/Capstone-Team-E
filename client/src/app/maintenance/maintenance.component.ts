@@ -16,7 +16,6 @@ export class MaintenanceComponent implements OnInit {
   showError:boolean=false;
   errorMessage:any;
   hospitalList:any=[];
-  assignModel: any={};
   itemForm: FormGroup;
   showMessage: any;
   responseMessage: any;

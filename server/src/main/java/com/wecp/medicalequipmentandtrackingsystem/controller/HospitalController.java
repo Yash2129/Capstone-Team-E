@@ -12,6 +12,7 @@ import com.wecp.medicalequipmentandtrackingsystem.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,6 +62,9 @@ public class HospitalController {
         Maintenance scheduledMaintenance = maintenanceService.scheduleMaintenance(equipmentId, maintenance);
         return new ResponseEntity<>(scheduledMaintenance, HttpStatus.CREATED);
     }
+
+
+    
 
     @PostMapping("/api/hospital/order")
     public ResponseEntity<Orders> placeOrder(@RequestParam Long equipmentId, @RequestBody Orders order) {

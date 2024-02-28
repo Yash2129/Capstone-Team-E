@@ -36,6 +36,9 @@ public class RegisterAndLoginController {
         return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
     }
 
+
+
+
     @PostMapping("/api/user/login")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
         try {
