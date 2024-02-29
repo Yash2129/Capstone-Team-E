@@ -1,0 +1,70 @@
+.navbar {
+    display: flex;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background-color: white;
+  }
+  
+  a, button {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  
+  a:hover {
+    background-color: #00268A;
+    color: white;
+    border-radius: 10px;
+  }
+  
+  .btn {
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 10px;
+    background-color: #00268A;
+    color: white;
+    border: none;
+    height: 30px;
+  }
+  
+  .logo {
+    padding-top: 10px;
+    padding-left: 50px;
+  }
+  
+  .right {
+    position: absolute;
+    top: 25px;
+    right: 70px;
+  }
+  
+  .main {
+    display: flex;
+  }
+  
+  .img {
+    position: relative;
+    left: 430px;
+  }
+  
+  .quote {
+    font-size: 40px;
+    position: relative;
+    top: 40px;
+  }
+  
+  p {
+    font-size: 15px;
+  }
+  
+  .text {
+    position: relative;
+    top: 20px;
+    left: 80px;
+  }

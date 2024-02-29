@@ -1,23 +1,25 @@
 package com.wecp.medicalequipmentandtrackingsystem.service;
 
+import com.wecp.medicalequipmentandtrackingsystem.entitiy.Hospital;
+import com.wecp.medicalequipmentandtrackingsystem.repository.HospitalRepository;
 
 import java.util.List;
 
-import com.wecp.medicalequipmentandtrackingsystem.entitiy.Hospital;
-import com.wecp.medicalequipmentandtrackingsystem.repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+@Service
 public class HospitalService {
-    public Hospital createHospital(Hospital hospital) {
-        // create hospital
-    }
+
+
+    @Autowired
+    private HospitalRepository hospitalRepository;
 
     public List<Hospital> getAllHospitals() {
-        // return list of hospitals
+        return hospitalRepository.findAll();
     }
 
-
-    
+    public Hospital createHospital(Hospital hospital) {
+        return hospitalRepository.save(hospital);
+    }
 }

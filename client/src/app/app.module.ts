@@ -21,6 +21,8 @@ import { RequestequipmentComponent } from './requestequipment/requestequipment.c
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { OrdersComponent } from './orders/orders.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { AboutusComponent } from './aboutus/aboutus.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
       RequestequipmentComponent,
       MaintenanceComponent,
       OrdersComponent,
-      SidebarComponent
+      SidebarComponent,
+      HomepageComponent,
+      AboutusComponent
   ],
   imports: [
     BrowserModule,

@@ -6,12 +6,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 
-
+@Entity
+@Table(name = "hospital")
 public class Hospital {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String location;
+    // Add other hospital-related fields as needed
 
+    @OneToMany(mappedBy = "hospital")
+    @JsonIgnore
     private List<Equipment> equipmentList;
 
     public Long getId() {
