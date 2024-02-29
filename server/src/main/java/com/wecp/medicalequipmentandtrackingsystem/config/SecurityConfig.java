@@ -3,7 +3,6 @@ package com.wecp.medicalequipmentandtrackingsystem.config;
 import com.wecp.medicalequipmentandtrackingsystem.jwt.JwtRequestFilter;
 import com.wecp.medicalequipmentandtrackingsystem.service.UserService;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -37,29 +35,30 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/api/user/login").permitAll()
-            .antMatchers("/api/user/register").permitAll()
-            .antMatchers(HttpMethod.POST,"/api/hospital/create").hasAuthority("HOSPITAL")
-            .antMatchers(HttpMethod.POST,"/api/hospital/equipment").hasAuthority("HOSPITAL")
-            .antMatchers(HttpMethod.POST,"/api/hospital/maintenance/schedule").hasAuthority("HOSPITAL")
-            .antMatchers(HttpMethod.POST,"/api/hospital/order").hasAuthority("HOSPITAL")
-            .antMatchers(HttpMethod.GET,"/api/hospital/equipment").hasAuthority("HOSPITAL")
-            .antMatchers(HttpMethod.GET,"/api/hospital/equipment/**").hasAuthority("HOSPITAL")
-            .antMatchers(HttpMethod.GET,"/api/hospitals").hasAuthority("HOSPITAL")
-            .antMatchers(HttpMethod.GET,"/api/technician/maintenance").hasAuthority("TECHNICIAN")
-            .antMatchers(HttpMethod.PUT,"/api/technician/maintenance/update/**").hasAuthority("TECHNICIAN")
-            .antMatchers(HttpMethod.GET,"/api/supplier/orders").hasAuthority("SUPPLIER")
-            .antMatchers(HttpMethod.PUT,"/api/supplier/order/update/**").hasAuthority("SUPPLIER")
+        return http.cors().and().csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/api/user/login").permitAll()
+                .antMatchers("/api/user/register").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/hospital/create").hasAuthority("HOSPITAL")
+                .antMatchers(HttpMethod.POST, "/api/hospital/equipment").hasAuthority("HOSPITAL")
+                .antMatchers(HttpMethod.POST, "/api/hospital/maintenance/schedule").hasAuthority("HOSPITAL")
+                .antMatchers(HttpMethod.POST, "/api/hospital/order").hasAuthority("HOSPITAL")
+                .antMatchers(HttpMethod.GET, "/api/hospital/equipment").hasAuthority("HOSPITAL")
+                .antMatchers(HttpMethod.GET, "/api/hospital/equipment/**").hasAuthority("HOSPITAL")
+                .antMatchers(HttpMethod.GET, "/api/hospitals").hasAuthority("HOSPITAL")
+                .antMatchers(HttpMethod.GET, "/api/technician/maintenance").hasAuthority("TECHNICIAN")
+                .antMatchers(HttpMethod.PUT, "/api/technician/maintenance/update/**").hasAuthority("TECHNICIAN")
+                .antMatchers(HttpMethod.GET, "/api/supplier/orders").hasAuthority("SUPPLIER")
+                .antMatchers(HttpMethod.PUT, "/api/supplier/order/update/**").hasAuthority("SUPPLIER")
                 .antMatchers("/api/**").authenticated()
-            .and()
-            .sessionManagement()
+                .and()
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
+                .and()
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+
     }
 
     @Bean
@@ -68,8 +67,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoders());
         return authenticationProvider;
