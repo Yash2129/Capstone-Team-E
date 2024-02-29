@@ -17,9 +17,8 @@ export class CreatehospitalComponent implements OnInit {
   showError: boolean = false;
   errorMessage: any;
   hospitalList: any = [];
-  assignModel: any = {};
 
-  showMessage: any;
+  showMessage: boolean = false;
   responseMessage: any;
   constructor(public router: Router, public httpService: HttpService, private formBuilder: FormBuilder, private authService: AuthService) {
     this.itemForm = this.formBuilder.group({
@@ -29,9 +28,9 @@ export class CreatehospitalComponent implements OnInit {
     });
 
     this.equipmentForm = this.formBuilder.group({
-      name: [this.formModel.name, [Validators.required]],
-      description: [this.formModel.description, [Validators.required]],
-      hospitalId: [this.formModel.hospitalId, [Validators.required]],
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      hospitalId: ['', [Validators.required]],
 
     });
   }
@@ -83,9 +82,13 @@ export class CreatehospitalComponent implements OnInit {
   submitEquipment() {
     if (this.equipmentForm.value) {
       this.showMessage = false;
+      this.responseMessage = ``;
       this.httpService.addEquipment(this.equipmentForm.value, this.equipmentForm.controls['hospitalId'].value).subscribe((data: any) => {
         this.showMessage = true;
+        this.equipmentForm.reset()
         this.responseMessage = `Equipment added successfully`;
+
+        
 
       }, error => {
         // Handle error
@@ -98,5 +101,7 @@ export class CreatehospitalComponent implements OnInit {
       this.equipmentForm.markAllAsTouched();
     }
   }
+  
+  
 
 }

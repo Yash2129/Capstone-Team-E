@@ -70,7 +70,7 @@ export class ScheduleMaintenanceComponent implements OnInit {
       if (this.itemForm.valid) {
         this.showError = false;
       
-        this.httpService.scheduleMaintenance(this.itemForm.value,1).subscribe((data: any) => {
+        this.httpService.scheduleMaintenance(this.itemForm.value,this.itemForm.value.equipmentId).subscribe((data: any) => {
           this.itemForm.reset();
           this.showMessage=true;
           this.responseMessage='Save Successfully';
