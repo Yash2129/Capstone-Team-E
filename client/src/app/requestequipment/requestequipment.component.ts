@@ -66,7 +66,7 @@ export class RequestequipmentComponent implements OnInit {
       if (this.itemForm.valid) {
         this.showError = false;
       
-        this.httpService.orderEquipment(this.itemForm.value,1).subscribe((data: any) => {
+        this.httpService.orderEquipment(this.itemForm.value,this.itemForm.value.equipmentId).subscribe((data: any) => {
           this.itemForm.reset();
           this.showMessage=true;
           this.responseMessage='Save Successfully';

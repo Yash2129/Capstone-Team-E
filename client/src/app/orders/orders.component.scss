@@ -1,6 +1,41 @@
 .heading1{
     font-size: small;
+    
   }
+  .filter-container {
+    display: flex;
+    align-items: center;
+   
+  }
+   
+  .status-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 8px;
+ 
+    margin-left: 60%;
+ 
+  }
+   .filter-container{
+  margin-left: 70%;
+   }
+  .filter-button {
+    padding: 8px 16px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+   
+  .filter-button:hover {
+    background-color: #0056b3;
+  }
+
   .intro {
     height: 100%;
   }
@@ -16,12 +51,7 @@
     overflow: hidden;
    
   }
-  .modal-dialog{
-    background-color: aquamarine;
-  }
-   .modal-content{
-    background-color:  #f6f6f6;
-   }
+ 
    .modal-header{
     background-color:  #002d72;
     color: white;

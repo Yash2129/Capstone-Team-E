@@ -1,4 +1,12 @@
 <h1 class="title1">Manage Orders</h1> 
+<div class="filter-container">
+  <select class="bt1 btn btn-sm btn-secondary dropdown-toggle" [(ngModel)]="selectedStatus">
+    <option value="">All</option>
+    <option value="Initiated">Initiated</option>
+    <option value="Complete">Completed</option>
+  </select>
+  <button class="bt2 btn btn-sm filter-button" (click)="getOrdersfilter()">Filter by Status</button>
+</div>
  
 <div class="bg-image h-100" style="background-color: white;">
   <div class="mask d-flex align-items-center h-100">

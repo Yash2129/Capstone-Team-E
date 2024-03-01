@@ -51,7 +51,7 @@
                       <select class="form-control" name="status" id="status" formControlName="status">
                         <option value="null">Choose Status</option>
                         <option value="Initiated">Initiated</option>
-                        <option value="Complete">Complete</option>
+                        <!-- <option value="Complete">Complete</option> -->
                       </select>
                       <div *ngIf="itemForm.controls['status'].invalid && (itemForm.controls['status'].dirty || itemForm.controls['status'].touched)" class="ng-dirty">
                         <span *ngIf="itemForm.controls['status'].errors" class="text-danger">Please choose status.</span>

@@ -6,7 +6,7 @@ package com.wecp.medicalequipmentandtrackingsystem.controller;
 import com.wecp.medicalequipmentandtrackingsystem.entitiy.Equipment;
 import com.wecp.medicalequipmentandtrackingsystem.entitiy.Hospital;
 import com.wecp.medicalequipmentandtrackingsystem.entitiy.Maintenance;
-import com.wecp.medicalequipmentandtrackingsystem.entitiy.Order;
+import com.wecp.medicalequipmentandtrackingsystem.entitiy.Orders;
 import com.wecp.medicalequipmentandtrackingsystem.service.EquipmentService;
 import com.wecp.medicalequipmentandtrackingsystem.service.HospitalService;
 import com.wecp.medicalequipmentandtrackingsystem.service.MaintenanceService;
@@ -65,8 +65,8 @@ public class HospitalController {
     }
 
     @PostMapping("/api/hospital/order")
-    public ResponseEntity<Order> placeOrder(@RequestParam Long equipmentId, @RequestBody Order order) {
-        Order placedOrder = orderService.placeOrder(equipmentId, order);
+    public ResponseEntity<Orders> placeOrder(@RequestParam Long equipmentId, @RequestBody Orders order) {
+        Orders placedOrder = orderService.placeOrder(equipmentId, order);
         return new ResponseEntity<>(placedOrder, HttpStatus.CREATED);
     }
 }
