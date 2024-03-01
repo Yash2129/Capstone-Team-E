@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from './registration/registration.component';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpService } from '../services/http.service';
 import { DashbaordComponent } from './dashbaord/dashbaord.component';
 import { CreatehospitalComponent } from './createhospital/createhospital.component';
@@ -13,6 +13,9 @@ import { ScheduleMaintenanceComponent } from './schedule-maintenance/schedule-ma
 import { RequestequipmentComponent } from './requestequipment/requestequipment.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { OrdersComponent } from './orders/orders.component';
+import { HomepageComponent } from './homepage/homepage.component';
+
+
 
 @NgModule({
   declarations: [
@@ -26,7 +29,8 @@ import { OrdersComponent } from './orders/orders.component';
     ScheduleMaintenanceComponent,
     RequestequipmentComponent,
     MaintenanceComponent,
-    OrdersComponent
+    OrdersComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,

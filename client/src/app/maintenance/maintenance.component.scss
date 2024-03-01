@@ -1,0 +1,52 @@
+.heading1{
+    font-size: small;
+  }
+  .intro {
+    height: 100%;
+  }
+  .title1{
+      margin-left: 6%;
+      margin-bottom: 2%;
+      margin-top: 1%;
+  }
+  table td,
+  table th {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    
+  }
+  .modal-dialog{
+    background-color: aquamarine;
+  }
+   .modal-content{
+    background-color:  #f6f6f6;
+   }
+   .modal-header{
+    background-color:  #002d72;
+    color: white;
+   }
+  thead th {
+    color: #fff;
+    font-size: smaller;
+  }
+   
+  .card {
+    border-radius: .5rem;
+    background-color: #fff;
+  }
+   
+  .table-scroll {
+    border-radius: .5rem;
+  }
+   
+  .table-scroll table thead th {
+    // font-size: 1.25rem;
+    font-size: medium;
+  
+  }
+  thead {
+    top: 0;
+    position: sticky;
+   
+  }

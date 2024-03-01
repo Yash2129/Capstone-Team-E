@@ -1,48 +1,78 @@
-<div class="vh-100 d-flex justify-content-center align-items-center">
+<section class="py-3 py-xl-8" style="background-color: #ffffff;">
   <div class="container">
-    <div class="row d-flex justify-content-center">
-      <div class="col-12 col-md-8 col-lg-6">
-        <div class="border border-3 border-primary"></div>
-        <div class="card bg-white">
-          <div class="card-body p-5">
-            <form class="mb-3 mt-md-4" [formGroup]="itemForm" (ngSubmit)="onLogin()">
-              <h2 class="fw-bold mb-2 text-uppercase ">Medical Equipment & Tracking System</h2>
-              <p class=" mb-5">Please enter your user and password!</p>
-              <div class="mb-3">
-                <label for="username" class="form-label ">Username</label>
-                <input type="username" name ="username"formControlName="username" [ngModel]="formModel.username" class="form-control" id="username" placeholder="name@example.com">
-                <div *ngIf="itemForm.controls['username'].invalid && (itemForm.controls['username'].dirty || itemForm.controls['username'].touched)"
-                class="ng-dirty">
-                <span *ngIf="itemForm.controls['username'].errors">
-                  <span class="text-danger">Please Enter username .</span>
-                </span>
-              </div>
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label ">Password</label>
-                <input type="password" name="password"  formControlName="password" [ngModel]="formModel.password" class="form-control" id="password" placeholder="*******">
-                <div *ngIf="itemForm.controls['password'].invalid && (itemForm.controls['password'].dirty || itemForm.controls['password'].touched)"
-                class="ng-dirty">
-                <span *ngIf="itemForm.controls['password'].errors">
-                  <span class="text-danger">Please Enter password .</span>
-                </span>
-              </div>
-              </div>
 
-              <div class="d-grid">
-                <button class="btn btn-outline-dark" type="submit">Login</button>
+    <div class="row gy-4 align-items-center">
+      <div class="col-12 col-md-6 col-xl-7">
+        <div class="d-flex justify-content-center">
+          
+          <div class="col-12 col-xl-9">
+            
+            <img src="assets/img/login.png"
+          class="img-fluid" alt="Phone image">
+          
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-2 col-xl-5" >
+        <div class="card border-0 rounded-4" style="background-color: #f6f6f6;">
+          <div class="card-body p-5">
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-4">
+                  <h3 style="font-weight: bold;">Login</h3>
+                </div>
+              </div>
+            </div>
+            <form class="mb-3 mt-md-4" [formGroup]="itemForm" (ngSubmit)="onLogin()">
+              <div class="row gy-3 overflow-hidden">
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <!-- username input -->
+                    <input type="text" class="form-control" name="username" id="username" placeholder="example123" formControlName="username"
+                      required>
+                    <label for="username" class="form-label">Username</label>
+                    <!-- username validation -->
+                    <div
+                      *ngIf="itemForm.get('username')?.invalid && (itemForm.get('username')?.dirty || itemForm.get('username')?.touched)"
+                      class="ng-dirty">
+                      <span class="text-danger">Username Invalid</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    
+                    <!-- password input -->
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" formControlName="password"
+                      required>
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group-addon">
+                      <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                    </div>
+                    <!-- password validation -->
+                    <div
+                      *ngIf="itemForm.get('password')?.invalid && (itemForm.get('password')?.dirty || itemForm.get('password')?.touched)"
+                      class="ng-dirty">
+                      <span class="text-danger">Password Invalid</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="d-grid">
+                    <button class="btn btn-primary btn-lg" type="submit" style="background-color: #00268A; font-weight: bold;">Sign in</button>
+                  </div>
+                </div>
               </div>
             </form>
-            <div>
-              <p class="mb-0  text-center">Don't have an account? <a (click)="registration()"
-                  class="text-primary fw-bold">Registration</a></p>
-            </div>
-            <div *ngIf="showError" class="alert alert-danger" role="alert">
-              {{errorMessage}}
+            <div class="row">
+              <div>
+                <p class="mb-0  text-center">Don't have an account? <a (click)="registration()"
+                    class="text-primary fw-bold">Registration</a></p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
