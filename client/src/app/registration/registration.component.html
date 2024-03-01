@@ -1,6 +1,6 @@
 <section class="py-3 py-xl-8" style="background-color: #ffffff;">
   <div class="container">
-    
+
     <div class="row gy-4 align-items-center">
       <div class="col-12 col-md-6 col-xl-7">
         <div class="d-flex justify-content-center">
@@ -10,7 +10,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-2 col-xl-5" >
+      <div class="col-12 col-md-2 col-xl-5">
         <div class="card border-0 rounded-4" style="background-color: #f6f6f6;">
           <div class="card-body p-5">
             <div class="row">
@@ -25,8 +25,8 @@
                 <div class="col-12">
                   <div class="form-floating mb-3">
                     <!-- username input -->
-                    <input type="text" class="form-control" name="username" id="username" placeholder="example123" formControlName="username"
-                      required>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="example123"
+                      formControlName="username" required>
                     <label for="username" class="form-label">Username</label>
                     <!-- username validation -->
                     <div
@@ -39,8 +39,8 @@
                 <div class="col-12">
                   <div class="form-floating mb-3">
                     <!-- email input -->
-                    <input type="email" class="form-control" name="email" id="email" placeholder="example@domain.com" formControlName="email"
-                      required>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="example@domain.com"
+                      formControlName="email" required>
                     <label for="email" class="form-label">Email</label>
                     <!-- email validation -->
                     <div
@@ -53,8 +53,8 @@
                 <div class="col-12">
                   <div class="form-floating mb-3">
                     <!-- password input -->
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" formControlName="password"
-                      required>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password"
+                      formControlName="password" required>
                     <label for="password" class="form-label">Password</label>
                     <!-- password validation -->
                     <div
@@ -67,15 +67,14 @@
                 <div class="col-12">
                   <div class="form-floating mb-3">
                     <!-- password input -->
-                    <input type="password" class="form-control" name="repassword" id="repassword" placeholder="Re-confirm Password" formControlName="repassword"
-                    validateEqual="password"
-                      required>
+                    <input type="password" class="form-control" name="repassword" id="repassword"
+                      placeholder="Re-confirm Password" formControlName="repassword" validateEqual="password" required>
                     <label for="repassword" class="form-label">Re-confirm Password</label>
                     <!--reconfirm password validation -->
                     <div
                       *ngIf="itemForm.get('repassword')?.invalid && (itemForm.get('repassword')?.dirty || itemForm.get('repassword')?.touched)"
                       class="ng-dirty">
-                      <span class="text-danger">Password Mismatch</span>
+                      <span class="text-danger">Confirm Password is required</span>
                     </div>
                   </div>
                 </div>
@@ -89,26 +88,35 @@
                     </select>
                     <label for="role">Role</label>
                     <!-- role validation -->
-                    <div *ngIf="itemForm.get('role')?.invalid && (itemForm.get('role')?.dirty || itemForm.get('role')?.touched)" class="ng-dirty">
+                    <div
+                      *ngIf="itemForm.get('role')?.invalid && (itemForm.get('role')?.dirty || itemForm.get('role')?.touched)"
+                      class="ng-dirty">
                       <span class="text-danger">Role Invalid</span>
                     </div>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="d-grid">
-                    <button class="btn btn-primary btn-lg" type="submit" style="background-color: #00268A; font-weight: bold;">Sign up</button>
+                    <button class="btn btn-primary btn-lg" type="submit"
+                      style="background-color: #00268A; font-weight: bold;">Sign up</button>
                   </div>
                 </div>
               </div>
             </form>
             <div>
               <p class="mb-0  text-center">Already have an account?
-                 <a [routerLink]="['/login']" class="text-primary fw-bold">Login</a></p>
+                <a [routerLink]="['/login']" class="text-primary fw-bold">Login</a>
+              </p>
             </div>
-            
+
             <div class="row">
               <div *ngIf="showMessage" class="alert alert-success mt-4" role="alert">
                 {{responseMessage}}
+              </div>
+            </div>
+            <div class="row">
+              <div *ngIf="showError" class="alert alert-danger mt-4" role="alert">
+                {{responseError}}
               </div>
             </div>
           </div>
