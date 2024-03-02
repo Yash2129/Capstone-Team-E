@@ -15,8 +15,8 @@ public class LoginResponse {
     @JsonCreator
     public LoginResponse(@JsonProperty("token") String token,
                          @JsonProperty("username") String username,
-                            @JsonProperty("email") String email,
-                            @JsonProperty("role") String role) {
+                         @JsonProperty("email") String email,
+                         @JsonProperty("role") String role) {
         this.token = token;
         this.username = username;
         this.email = email;
