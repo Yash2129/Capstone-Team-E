@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { SearchPipe } from './search.pipe';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -20,6 +22,7 @@ import { ScheduleMaintenanceComponent } from './schedule-maintenance/schedule-ma
 import { RequestequipmentComponent } from './requestequipment/requestequipment.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { OrdersComponent } from './orders/orders.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,9 @@ import { OrdersComponent } from './orders/orders.component';
       ScheduleMaintenanceComponent,
       RequestequipmentComponent,
       MaintenanceComponent,
-      OrdersComponent
+      OrdersComponent,
+      SearchPipe,
+      HomeComponent
   ],
   imports: [
     BrowserModule,

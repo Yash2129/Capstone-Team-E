@@ -13,37 +13,35 @@ import { AuthService } from '../../services/auth.service';
 export class CreatehospitalComponent implements OnInit {
   itemForm: FormGroup;
   equipmentForm: FormGroup;
-  formModel:any={status:null};
-  showError:boolean=false;
-  errorMessage:any;
-  hospitalList:any=[];
-  assignModel: any={};
+  formModel: any = { status: null };
+  showError: boolean = false;
+  errorMessage: any;
+  hospitalList: any = [];
 
-  showMessage: any;
+  showMessage: boolean = false;
   responseMessage: any;
-  constructor(public router:Router, public httpService:HttpService, private formBuilder: FormBuilder, private authService:AuthService) 
-    {
-      this.itemForm = this.formBuilder.group({
-        name: [this.formModel.name,[ Validators.required]],
-        location: [this.formModel.location,[ Validators.required]], 
-       
+  constructor(public router: Router, public httpService: HttpService, private formBuilder: FormBuilder, private authService: AuthService) {
+    this.itemForm = this.formBuilder.group({
+      name: [this.formModel.name, [Validators.required]],
+      location: [this.formModel.location, [Validators.required]],
+
     });
 
     this.equipmentForm = this.formBuilder.group({
-      name: [this.formModel.name,[ Validators.required]],
-      description: [this.formModel.description,[ Validators.required]], 
-      hospitalId: [this.formModel.hospitalId,[ Validators.required]],
-     
-  });
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      hospitalId: ['', [Validators.required]],
+
+    });
   }
   ngOnInit(): void {
 
     this.getHospital();
   }
   getHospital() {
-    this.hospitalList=[];
+    this.hospitalList = [];
     this.httpService.getHospital().subscribe((data: any) => {
-      this.hospitalList=data;
+      this.hospitalList = data;
       console.log(this.hospitalList);
     }, error => {
       // Handle error
@@ -53,17 +51,15 @@ export class CreatehospitalComponent implements OnInit {
     });;
   }
 
- 
-  onSubmit()
-  {
-    if(this.itemForm.valid)
-    {
+
+  onSubmit() {
+    if (this.itemForm.valid) {
       if (this.itemForm.valid) {
         this.showError = false;
         this.httpService.createHospital(this.itemForm.value).subscribe((data: any) => {
           this.itemForm.reset();
           this.getHospital();
-          
+
         }, error => {
           // Handle error
           this.showError = true;
@@ -74,25 +70,26 @@ export class CreatehospitalComponent implements OnInit {
         this.itemForm.markAllAsTouched();
       }
     }
-    else{
+    else {
       this.itemForm.markAllAsTouched();
     }
   }
-  Addequipment(value:any)
-  {
-    
+  Addequipment(value: any) {
+
     debugger;
     this.equipmentForm.controls['hospitalId'].setValue(value.id);
   }
-  submitEquipment()
-  {
-    if(this.equipmentForm.value)
-    {
+  submitEquipment() {
+    if (this.equipmentForm.value) {
       this.showMessage = false;
+      this.responseMessage = ``;
       this.httpService.addEquipment(this.equipmentForm.value, this.equipmentForm.controls['hospitalId'].value).subscribe((data: any) => {
-     this.showMessage=true;
-     this.responseMessage=`Equipment added successfully`;
-     
+        this.showMessage = true;
+        this.equipmentForm.reset()
+        this.responseMessage = `Equipment added successfully`;
+
+        
+
       }, error => {
         // Handle error
         this.showError = true;
@@ -100,9 +97,11 @@ export class CreatehospitalComponent implements OnInit {
         console.error('Login error:', error);
       });;
     }
-    else{
+    else {
       this.equipmentForm.markAllAsTouched();
     }
   }
   
+  
+
 }

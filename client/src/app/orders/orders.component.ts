@@ -12,6 +12,7 @@ import { AuthService } from '../../services/auth.service';
 export class OrdersComponent implements OnInit {
 
   selectedStatus:string='';
+  searchInput:string='';
 
  isRowEven(index: number): boolean {
   return index % 2 === 0;
@@ -74,8 +75,7 @@ export class OrdersComponent implements OnInit {
   getOrdersfilter() {
     this.orderList = [];
     this.httpService.getorders().subscribe((data: any) => {
-      // Assuming 'Initiated' is the default status to display
-      //this.maintenanceList = this.filterMaintenanceByStatus(data, null); //this.selected_Status
+      //this.orderList = this.filterOrdersByStatus(data, null); //this.selected_Status
       this.orderList = this.filterOrdersByStatus(data, this.selectedStatus);
     }, error => {
       // Handle error
@@ -87,9 +87,6 @@ export class OrdersComponent implements OnInit {
 
 
 filterOrdersByStatus(data: any[], status: string | null): any[] {
-    if(!status){
-      return data;
-    }
     if (data && data.length > 0) {
       return data.filter(order => order.status === status);
     } else {
@@ -97,6 +94,30 @@ filterOrdersByStatus(data: any[], status: string | null): any[] {
     }
   }
 
+  getOrdersViaInput() {
+    this.orderList = [];
+    this.httpService.getorders().subscribe((orders: any) => {
+      //this.orderList = this.filterOrdersByInput(data, null); //this.selected_Status
+      this.orderList = this.filterOrdersByName(orders, this.searchInput);
+    }, error => {
+      // Handle error
+      this.showError = true;
+      this.errorMessage = "An error occurred while logging in. Please try again later.";
+      console.error('Login error:', error);
+    });
+  }
+  filterOrdersByName(orders: any[], search: string | null){
+    if(!search){
+      return orders;
+    }
+    search = search.toLowerCase();
+    return orders.filter(x =>x.equipment.hospital.name.toLowerCase().includes(search));
+    // if (data && data.length > 0) {
+    //   return data.filter(order => order.equipment.hospital.name === search);
+    // } else {
+    //   return [];
+    // }
+  }
 
  }
  

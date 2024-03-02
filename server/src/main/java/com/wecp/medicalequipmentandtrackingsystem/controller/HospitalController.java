@@ -1,8 +1,5 @@
 package com.wecp.medicalequipmentandtrackingsystem.controller;
 
-
-
-//Nayaz added code in the Hospital Controller
 import com.wecp.medicalequipmentandtrackingsystem.entitiy.Equipment;
 import com.wecp.medicalequipmentandtrackingsystem.entitiy.Hospital;
 import com.wecp.medicalequipmentandtrackingsystem.entitiy.Maintenance;

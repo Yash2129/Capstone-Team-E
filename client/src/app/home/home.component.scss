@@ -1,0 +1,98 @@
+.flex {
+    display: flex;
+  }
+
+
+  .main {
+    display: flex;
+    margin-bottom: 50px;
+  }
+  
+  .img {
+    position: relative;
+    top: 20px;
+    left: 450px;
+  }
+  
+  .quote {
+    font-size: 40px;
+    position: relative;
+    top: 40px;
+  }
+  
+  p {
+    font-size: 15px;
+  }
+  
+  .text {
+    position: relative;
+    top: 50px;
+    left: 100px;
+  }
+
+.left {
+    position: relative;
+    left: 60px;
+  }
+
+.right-text {
+    position: relative;
+    top: 100px;
+    left: 150px;
+}
+
+
+
+
+i {
+  width: 14px;
+  height: 10px;
+}
+
+.container {
+    position: relative;
+    width: 50%;
+  }
+
+  .image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: blur;
+    overflow: hidden;
+    width: 100%;
+    height: 0;
+    transition: .5s ease;
+  }
+
+  .container:hover .overlay {
+    height: 100%;
+    background-color: #00268A;
+    opacity: 80%;
+  }
+
+  .img-text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding-top: 40px;
+  }
+
+  .img-head {
+    color: white;
+    text-align: center;
+    padding-top: 10px;
+  }
