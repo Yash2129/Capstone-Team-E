@@ -15,12 +15,12 @@ public class Maintenance {
     private Date completedDate;
     private String description;
 
-    private String status; // status field to track the status of the maintenance task
-    // Add other maintenance-related fields as needed
+    private String status; 
+    
 
     @ManyToOne
     @JoinColumn(name = "equipmentId")
-    private Equipment equipment; // Many maintenance tasks can be associated with one equipment
+    private Equipment equipment; 
 
     public Long getId() {
         return id;

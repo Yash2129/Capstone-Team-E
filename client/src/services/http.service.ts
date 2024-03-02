@@ -60,6 +60,10 @@ export class HttpService {
     headers = headers.set('Authorization', `Bearer ${authToken}`)
     return this.http.get(this.serverName+`/api/hospitals`,{headers:headers});
   }
+  searchOrders(query: string): Observable<any> {
+    // Make an HTTP request to search orders based on the query
+    return this.http.get<any>('api/orders/search', { params: { q: query } });
+  }
   getEquipmentById(id:any):Observable<any> {
    
     const authToken = this.authService.getToken();

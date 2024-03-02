@@ -31,7 +31,7 @@ public class MaintenanceService {
 
         // Set the equipment for the maintenance task
         maintenance.setEquipment(equipment);
-
+       
         return maintenanceRepository.save(maintenance);
     }
 
@@ -44,7 +44,7 @@ public class MaintenanceService {
         updatedMaintenance.setId(existingMaintenance.getId());
         updatedMaintenance.setEquipment(existingMaintenance.getEquipment());
 
-        // Save the updated maintenance record
+       
         return maintenanceRepository.save(updatedMaintenance);
     }
 }
