@@ -29,7 +29,7 @@ public class MaintenanceService {
         Equipment equipment = equipmentRepository.findById(equipmentId)
                 .orElseThrow(() -> new EntityNotFoundException("Equipment not found with ID: " + equipmentId));
 
-        // Set the equipment for the maintenance task
+  
         maintenance.setEquipment(equipment);
        
         return maintenanceRepository.save(maintenance);
@@ -37,7 +37,7 @@ public class MaintenanceService {
 
 
     public Maintenance updateMaintenance(Long maintenanceId, Maintenance updatedMaintenance) {
-        // Check if the maintenance record with the given ID exists
+       
         Maintenance existingMaintenance = maintenanceRepository.findById(maintenanceId)
                 .orElseThrow(() -> new EntityNotFoundException("Maintenance record not found with ID: " + maintenanceId));
 

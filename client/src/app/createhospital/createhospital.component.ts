@@ -17,6 +17,7 @@ export class CreatehospitalComponent implements OnInit {
   showError: boolean = false;
   errorMessage: any;
   hospitalList: any = [];
+  
   assignModel: any = {};
 
   showMessage: any;
@@ -52,7 +53,13 @@ export class CreatehospitalComponent implements OnInit {
     });;
   }
 
+//
 
+
+
+
+
+ 
   onSubmit() {
     if (this.itemForm.valid) {
       if (this.itemForm.valid) {
