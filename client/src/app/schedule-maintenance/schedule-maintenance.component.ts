@@ -57,8 +57,7 @@ export class ScheduleMaintenanceComponent implements OnInit {
     }, error => {
       // Handle error
       this.showError = true;
-      this.errorMessage = "An error occurred while logging in. Please try again later.";
-      console.error('Login error:', error);
+      this.errorMessage = error;
     });;
   }
 
@@ -78,8 +77,8 @@ export class ScheduleMaintenanceComponent implements OnInit {
         }, error => {
           // Handle error
           this.showError = true;
-          this.errorMessage = "An error occurred while logging in. Please try again later.";
-          console.error('Login error:', error);
+          this.errorMessage = error;
+          
         })
       } else {
         this.itemForm.markAllAsTouched();
@@ -98,8 +97,7 @@ export class ScheduleMaintenanceComponent implements OnInit {
    }, error => {
      // Handle error
      this.showError = true;
-     this.errorMessage = "An error occurred while logging in. Please try again later.";
-     console.error('Login error:', error);
+     this.errorMessage = error;
    });
   
 }

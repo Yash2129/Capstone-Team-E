@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from '../../services/http.service';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-requestequipment',
@@ -10,94 +8,71 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./requestequipment.component.scss']
 })
 export class RequestequipmentComponent implements OnInit {
-
   itemForm: FormGroup;
+  showError: boolean = false;
+  errorMessage: string = '';
+  showMessage: boolean = false;
+  responseMessage: string = '';
+  hospitalList: any[] = [];
+  equipmentList: any[] = [];
 
-  formModel:any={status:null};
-  showError:boolean=false;
-  errorMessage:any;
-  hospitalList:any=[];
-  assignModel: any={};
-
-  showMessage: any;
-  responseMessage: any;
-  equipmentList: any=[];
-  constructor(public router:Router, public httpService:HttpService, private formBuilder: FormBuilder, private authService:AuthService) 
-    {
-      this.itemForm = this.formBuilder.group({
-        orderDate: [this.formModel.scheduledDate,[ Validators.required, this.dateValidator]],  
-        quantity: [this.formModel.description,[ Validators.required]], 
-        status: [this.formModel.status,[ Validators.required]], 
-        equipmentId: [this.formModel.equipmentId,[ Validators.required]], 
-        hospitalId: [this.formModel.equipmentId,[ Validators.required]],
+  constructor(private formBuilder: FormBuilder, private httpService: HttpService) {
+    this.itemForm = this.formBuilder.group({
+      orderDate: ['', [Validators.required]],  
+      quantity: ['', [Validators.required]], 
+      status: ['', [Validators.required]], 
+      equipmentId: ['', [Validators.required]], 
+      hospitalId: ['', [Validators.required]],
     });
-
-
-
-}  ngOnInit(): void {
-  this.getHospital();
   }
+
+  ngOnInit(): void {
+    this.getHospital();
+  }
+
   getHospital() {
-    this.hospitalList=[];
-    this.httpService.getHospital().subscribe((data: any) => {
-      this.hospitalList=data;
-      console.log(this.hospitalList);
-    }, error => {
-      // Handle error
-      this.showError = true;
-      this.errorMessage = "An error occurred while logging in. Please try again later.";
-      console.error('Login error:', error);
-    });;
-  }
-  dateValidator(control: AbstractControl): ValidationErrors | null {
-    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-
-    if (!datePattern.test(control.value)) {
-      return { invalidDate: true };
-    }
-
-    return null;
-  }
-  onSubmit()
-  {
-    debugger;
-    if(this.itemForm.valid)
-    {
-      if (this.itemForm.valid) {
-        this.showError = false;
-      
-        this.httpService.orderEquipment(this.itemForm.value,this.itemForm.value.equipmentId).subscribe((data: any) => {
-          this.itemForm.reset();
-          this.showMessage=true;
-          this.responseMessage='Save Successfully';
-          
-        }, error => {
-          // Handle error
-          this.showError = true;
-          this.errorMessage = "An error occurred while logging in. Please try again later.";
-          console.error('Login error:', error);
-        });;
-      } else {
-        this.itemForm.markAllAsTouched();
+    this.httpService.getHospital().subscribe(
+      (data: any) => {
+        this.hospitalList = data;
+      },
+      (error) => {
+        this.handleError(error);
       }
-    }
-    else{
+    );
+  }
+
+  onSubmit() {
+    if (this.itemForm.valid) {
+      this.showError = false;
+      this.httpService.orderEquipment(this.itemForm.value, this.itemForm.value.equipmentId).subscribe(
+        (data: any) => {
+          this.itemForm.reset();
+          this.showMessage = true;
+          this.responseMessage = 'Saved Successfully';
+        },
+        (error) => {
+          this.handleError(error);
+        }
+      );
+    } else {
       this.itemForm.markAllAsTouched();
     }
   }
-  onHospitalSelect($event: any) {
-    let id= $event.target.value
-    this.equipmentList=[];
-    this.httpService.getEquipmentById(id).subscribe((data: any) => {
-      this.equipmentList=data;
-      console.log(this.equipmentList);
-    }, error => {
-      // Handle error
-      this.showError = true;
-      this.errorMessage = "An error occurred while logging in. Please try again later.";
-      console.error('Login error:', error);
-    });;
-   
- }
-}
 
+  onHospitalSelect(event: any) {
+    let id = event.target.value;
+    this.httpService.getEquipmentById(id).subscribe(
+      (data: any) => {
+        this.equipmentList = data;
+      },
+      (error) => {
+        this.handleError(error);
+      }
+    );
+  }
+
+  private handleError(error: any) {
+    this.showError = true;
+    this.errorMessage = error.error ? error.error.message : 'An error occurred.';
+  }
+}

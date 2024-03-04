@@ -1,3 +1,54 @@
-.right {
-    justify-content: end;
+
+a:hover {
+    color: #00268A;
+    text-shadow: 0.5px 0.5px;
 }
+
+.main-btn {
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: #00268A;
+    color: white;
+    width: 80px;
+}
+
+.main-btn:hover {
+    background-color: #319DF1;
+}
+
+.danger-btn {
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: #d9534f;
+    color: white;
+    width: 80px;
+}
+
+.danger-btn:hover {
+    transform: scale(1.1)
+}
+
+.right {
+    padding-left: 750px;
+    display: flex;
+    column-gap: 30px;
+    margin-top: -1px;
+}
+
+.fixed {
+    position: fixed; 
+    overflow: hidden;
+    top:0;
+    width: 100%;
+    z-index: 10; 
+}
+
+.left-btn {
+    margin-top: -1px;
+    padding-left: 20px;
+}
+
+.right-btn {
+    margin-top: -1px;
+}
+

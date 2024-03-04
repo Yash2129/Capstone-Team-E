@@ -1,118 +1,80 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../environments/environment.development';
 import { AuthService } from './auth.service';
- 
+
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
-  public serverName=environment.apiUrl;  // To get server name
-  constructor(private http: HttpClient, private authService:AuthService) {
- 
-   }
- 
- 
-  UpdateOrderStatus(newStatus:any,orderId:any):Observable<any> {
- 
-    const authToken = this.authService.getToken();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Authorization', `Bearer ${authToken}`);
-    return this.http.put<any>(this.serverName+'/api/supplier/order/update/'+orderId+'?newStatus='+newStatus,{},{headers:headers});
+  public serverName = environment.apiUrl;  // To get server name
+
+  constructor(private http: HttpClient, private authService: AuthService) {}
+
+  private handleError(error: any): Observable<never> {
+    let errorMessage = 'An error occurred.';
+    if (error.error && error.error.message) {
+      errorMessage = error.error.message;
+    }
+    return throwError(errorMessage);
   }
- 
-  addEquipment(details:any,hospitalId: any): Observable<any> {
-    const authToken = this.authService.getToken();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Authorization', `Bearer ${authToken}`);
+
+  UpdateOrderStatus(newStatus: any, orderId: any): Observable<any> {
+    return this.http.put<any>(this.serverName+'/api/supplier/order/update/'+orderId+'?newStatus='+newStatus,{})
+      .pipe(catchError(this.handleError));
+  }
+
+  addEquipment(details: any, hospitalId: any): Observable<any> {
     return this.http.post<any>(
       `${this.serverName}/api/hospital/equipment?hospitalId=${hospitalId}`,
-      details, // Body
-      { headers: headers }
-    );
+      details
+    ).pipe(catchError(this.handleError));
   }
- 
- 
-  getorders():Observable<any> {
-   
-    const authToken = this.authService.getToken();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Authorization', `Bearer ${authToken}`)
-    return this.http.get(this.serverName+`/api/supplier/orders`,{headers:headers});
+
+  getorders(): Observable<any> {
+    return this.http.get(`${this.serverName}/api/supplier/orders`).pipe(catchError(this.handleError));
   }
-  getMaintenance():Observable<any> {
-   
-    const authToken = this.authService.getToken();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Authorization', `Bearer ${authToken}`)
-    return this.http.get(this.serverName+`/api/technician/maintenance`,{headers:headers});
+
+  getMaintenance(): Observable<any> {
+    return this.http.get(`${this.serverName}/api/technician/maintenance`).pipe(catchError(this.handleError));
   }
-  getHospital():Observable<any> {
-   
-    const authToken = this.authService.getToken();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Authorization', `Bearer ${authToken}`)
-    return this.http.get(this.serverName+`/api/hospitals`,{headers:headers});
+
+  getHospital(): Observable<any> {
+    return this.http.get(`${this.serverName}/api/hospitals`).pipe(catchError(this.handleError));
   }
-  getEquipmentById(id:any):Observable<any> {
-   
-    const authToken = this.authService.getToken();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Authorization', `Bearer ${authToken}`)
-    return this.http.get(this.serverName+`/api/hospital/equipment/`+id,{headers:headers});
+
+  getEquipmentById(id: any): Observable<any> {
+    return this.http.get(`${this.serverName}/api/hospital/equipment/${id}`).pipe(catchError(this.handleError));
   }
- 
-  updateMaintenance(details:any,maintenanceId:any):Observable<any> {
- 
-    const authToken = this.authService.getToken();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Authorization', `Bearer ${authToken}`);
-    return this.http.put(this.serverName+'/api/technician/maintenance/update/'+maintenanceId,details,{headers:headers});
+
+  updateMaintenance(details: any, maintenanceId: any): Observable<any> {
+    return this.http.put(`${this.serverName}/api/technician/maintenance/update/${maintenanceId}`, details).pipe(catchError(this.handleError));
   }
-  orderEquipment(details:any,equipmentId:any):Observable<any> {
- 
-    const authToken = this.authService.getToken();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Authorization', `Bearer ${authToken}`);
-    return this.http.post(this.serverName+'/api/hospital/order?equipmentId='+equipmentId,details,{headers:headers});
+
+  orderEquipment(details: any, equipmentId: any): Observable<any> {
+    return this.http.post(`${this.serverName}/api/hospital/order?equipmentId=${equipmentId}`, details).pipe(catchError(this.handleError));
   }
-  scheduleMaintenance(details:any,equipmentId:any):Observable<any> {
- 
-    const authToken = this.authService.getToken();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Authorization', `Bearer ${authToken}`);
-    return this.http.post(this.serverName+'/api/hospital/maintenance/schedule?equipmentId='+equipmentId,details,{headers:headers});
+
+  scheduleMaintenance(details: any, equipmentId: any): Observable<any> {
+    return this.http.post(`${this.serverName}/api/hospital/maintenance/schedule?equipmentId=${equipmentId}`, details).pipe(catchError(this.handleError));
   }
-  createHospital(details:any):Observable<any> {
- 
-    const authToken = this.authService.getToken();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Authorization', `Bearer ${authToken}`);
-    return this.http.post(this.serverName+'/api/hospital/create',details,{headers:headers});
+
+  createHospital(details: any): Observable<any> {
+    return this.http.post(`${this.serverName}/api/hospital/create`, details).pipe(catchError(this.handleError));
   }
-  Login(details:any):Observable<any> {
-   
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    return this.http.post(this.serverName+'/api/user/login',details,{headers:headers});
+
+  Login(details: any): Observable<any> {
+    return this.http.post(`${this.serverName}/api/user/login`, details).pipe(catchError(this.handleError));
   }
-  registerUser(details:any):Observable<any> {
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-    return this.http.post(this.serverName+'/api/user/register',details,{headers:headers});
+
+  // To check if the username is already exist on the database
+  checkUsernameExists(username: String): Observable<boolean> {
+    return this.http.get<boolean>(this.serverName+'/checkUsername?username='+username);
   }
- 
- 
- 
+
+  registerUser(details: any): Observable<any> {
+    return this.http.post(`${this.serverName}/api/user/register`, details).pipe(catchError(this.handleError));
+  }
 }

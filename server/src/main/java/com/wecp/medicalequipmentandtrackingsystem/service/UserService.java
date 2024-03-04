@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -29,6 +27,10 @@ public class UserService implements UserDetailsService {
 
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username).get();
+    }
+
+    public boolean checkUsernameExists(String username) {
+        return userRepository.existsByUsername(username);
     }
 
     @Override

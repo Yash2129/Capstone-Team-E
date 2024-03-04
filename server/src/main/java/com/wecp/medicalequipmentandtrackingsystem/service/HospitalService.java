@@ -1,16 +1,16 @@
 package com.wecp.medicalequipmentandtrackingsystem.service;
 
 import com.wecp.medicalequipmentandtrackingsystem.entitiy.Hospital;
+import com.wecp.medicalequipmentandtrackingsystem.exceptions.HospitalServiceException;
 import com.wecp.medicalequipmentandtrackingsystem.repository.HospitalRepository;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class HospitalService {
-
 
     @Autowired
     private HospitalRepository hospitalRepository;
@@ -20,6 +20,10 @@ public class HospitalService {
     }
 
     public Hospital createHospital(Hospital hospital) {
-        return hospitalRepository.save(hospital);
+        try {
+            return hospitalRepository.save(hospital);
+        } catch (Exception e) {
+            throw new HospitalServiceException("Failed to create hospital: " + e.getMessage());
+        }
     }
 }

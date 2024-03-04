@@ -7,8 +7,8 @@ import com.wecp.medicalequipmentandtrackingsystem.repository.EquipmentRepository
 import com.wecp.medicalequipmentandtrackingsystem.repository.MaintenanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
+import com.wecp.medicalequipmentandtrackingsystem.exceptions.MaintenanceNotFoundException;
+import com.wecp.medicalequipmentandtrackingsystem.exceptions.EquipmentNotFoundException;
 import java.util.List;
 
 @Service
@@ -27,7 +27,7 @@ public class MaintenanceService {
 
     public Maintenance scheduleMaintenance(Long equipmentId, Maintenance maintenance) {
         Equipment equipment = equipmentRepository.findById(equipmentId)
-                .orElseThrow(() -> new EntityNotFoundException("Equipment not found with ID: " + equipmentId));
+                .orElseThrow(() -> new EquipmentNotFoundException("Equipment not found with ID: " + equipmentId));
 
         // Set the equipment for the maintenance task
         maintenance.setEquipment(equipment);
@@ -39,7 +39,7 @@ public class MaintenanceService {
     public Maintenance updateMaintenance(Long maintenanceId, Maintenance updatedMaintenance) {
         // Check if the maintenance record with the given ID exists
         Maintenance existingMaintenance = maintenanceRepository.findById(maintenanceId)
-                .orElseThrow(() -> new EntityNotFoundException("Maintenance record not found with ID: " + maintenanceId));
+                .orElseThrow(() -> new MaintenanceNotFoundException("Maintenance record not found with ID: " + maintenanceId));
 
         updatedMaintenance.setId(existingMaintenance.getId());
         updatedMaintenance.setEquipment(existingMaintenance.getEquipment());

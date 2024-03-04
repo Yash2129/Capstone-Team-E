@@ -13,8 +13,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,13 +32,18 @@ public class RegisterAndLoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+
+    @GetMapping("/checkUsername")
+    public ResponseEntity<Boolean> checkUsernameExists(@RequestParam String username) {
+        boolean usernameExists = userService.checkUsernameExists(username);
+        return ResponseEntity.ok(usernameExists);
+    }
+
     @PostMapping("/api/user/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         User registeredUser = userService.registerUser(user);
         return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
     }
-
-
 
 
     @PostMapping("/api/user/login")
@@ -56,4 +63,6 @@ public class RegisterAndLoginController {
 
         return ResponseEntity.ok(new LoginResponse(token, user.getUsername(), user.getEmail(), user.getRole()));
     }
+
+
 }

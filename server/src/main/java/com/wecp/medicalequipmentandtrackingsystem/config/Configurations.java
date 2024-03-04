@@ -6,23 +6,27 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 public class Configurations {
 
+    // Bean definition for PasswordEncoder to encode and decode passwords
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Bean definition for configuring CORS (Cross-Origin Resource Sharing)
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE").allowedOrigins("*")
-                        .allowedHeaders("*");
+                // Allow cross-origin requests from all origins and methods
+                registry.addMapping("/**")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Allowed HTTP methods
+                        .allowedOrigins("*") // Allowed origins (all)
+                        .allowedHeaders("*"); // Allowed request headers
             }
         };
     }

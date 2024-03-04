@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from '../../services/http.service';
-import { AuthService } from '../../services/auth.service';
-
 
 @Component({
   selector: 'app-createhospital',
@@ -20,88 +18,136 @@ export class CreatehospitalComponent implements OnInit {
 
   showMessage: boolean = false;
   responseMessage: any;
-  constructor(public router: Router, public httpService: HttpService, private formBuilder: FormBuilder, private authService: AuthService) {
+
+  //Search Properties
+  searchInput:string=''; //For Searching
+
+  // Pagination properties
+  pageSize: number = 5; // Number of items per page
+  currentPage: number = 1; // Current page number
+  totalPages: number = 0; // Total number of pages
+  paginatedHospitalList: any = []; // Hospital list for the current page
+  pages: number[] = []; // Array to hold page numbers for pagination
+
+  constructor(public router: Router, public httpService: HttpService, private formBuilder: FormBuilder) {
     this.itemForm = this.formBuilder.group({
       name: [this.formModel.name, [Validators.required]],
       location: [this.formModel.location, [Validators.required]],
-
     });
 
     this.equipmentForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       hospitalId: ['', [Validators.required]],
-
     });
   }
-  ngOnInit(): void {
 
+  ngOnInit(): void {
     this.getHospital();
   }
+
   getHospital() {
     this.hospitalList = [];
     this.httpService.getHospital().subscribe((data: any) => {
       this.hospitalList = data;
-      console.log(this.hospitalList);
+      this.totalPages = Math.ceil(this.hospitalList.length / this.pageSize);
+      this.setPage(this.currentPage); 
     }, error => {
-      // Handle error
       this.showError = true;
-      this.errorMessage = "An error occurred while logging in. Please try again later.";
-      console.error('Login error:', error);
-    });;
+      this.errorMessage = error;
+    });
   }
-
 
   onSubmit() {
     if (this.itemForm.valid) {
-      if (this.itemForm.valid) {
-        this.showError = false;
-        this.httpService.createHospital(this.itemForm.value).subscribe((data: any) => {
-          this.itemForm.reset();
-          this.getHospital();
-
-        }, error => {
-          // Handle error
-          this.showError = true;
-          this.errorMessage = "An error occurred while logging in. Please try again later.";
-          console.error('Login error:', error);
-        });;
-      } else {
-        this.itemForm.markAllAsTouched();
-      }
-    }
-    else {
+      this.showError = false;
+      this.httpService.createHospital(this.itemForm.value).subscribe((data: any) => {
+        this.itemForm.reset();
+        this.getHospital();
+      }, error => {
+        this.showError = true;
+        this.errorMessage = error;
+      });
+    } else {
       this.itemForm.markAllAsTouched();
     }
   }
-  Addequipment(value: any) {
 
-    debugger;
+  Addequipment(value: any) {
     this.equipmentForm.controls['hospitalId'].setValue(value.id);
   }
+
   submitEquipment() {
-    if (this.equipmentForm.value) {
+    if (this.equipmentForm.valid) {
       this.showMessage = false;
-      this.responseMessage = ``;
+      this.responseMessage = '';
       this.httpService.addEquipment(this.equipmentForm.value, this.equipmentForm.controls['hospitalId'].value).subscribe((data: any) => {
         this.showMessage = true;
-        this.equipmentForm.reset()
-        this.responseMessage = `Equipment added successfully`;
-
-        
-
+        this.equipmentForm.reset();
+        this.responseMessage = 'Equipment added successfully';
       }, error => {
-        // Handle error
         this.showError = true;
-        this.errorMessage = "An error occurred while logging in. Please try again later.";
-        console.error('Login error:', error);
-      });;
-    }
-    else {
+        this.errorMessage = error;
+      });
+    } else {
       this.equipmentForm.markAllAsTouched();
     }
   }
-  
-  
+
+  // For Pagination  
+  setPage(page: number) {
+    this.currentPage = page;
+    const startIndex = (page - 1) * this.pageSize;
+    const endIndex = Math.min(startIndex + this.pageSize, this.hospitalList.length);
+    this.paginatedHospitalList = this.hospitalList.slice(startIndex, endIndex);
+    this.calculatePageNumbers();
+  }
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.setPage(this.currentPage - 1);
+    }
+  }
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.setPage(this.currentPage + 1);
+    }
+  }
+  calculatePageNumbers() {
+    this.pages = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      this.pages.push(i);
+    }
+  }
+
+  // For Searching
+  filterHospitals(hospitals: any[], search: string | null){
+    if(!search){
+      return hospitals;
+    }
+    search = search.toLowerCase();
+    return hospitals.filter(hospital => hospital.name.toLowerCase().includes(search) || 
+                                        hospital.location.toLowerCase().includes(search) ||
+                                        hospital.id.toString().toLowerCase().includes(search));
+  }
+  getHospitalsViaInput() {
+    this.paginatedHospitalList = [];
+    this.httpService.getHospital().subscribe((hospitals: any) => {
+      this.hospitalList=hospitals;
+      const filteredHospitals=this.filterHospitals(hospitals,this.searchInput);
+      this.totalPages=Math.ceil(filteredHospitals.length/this.pageSize);
+      this.paginatedHospitalList=filteredHospitals.slice(0,this.pageSize);
+      this.currentPage=1;
+      this.calculatePageNumbers();
+    }, error => {
+
+      this.showError = true;
+      this.errorMessage = error;
+    });
+  }
+  onSearch(event: any) {
+    const searchValue = event.target.value;
+    this.searchInput = searchValue;
+    this.getHospitalsViaInput();
+  }
 
 }

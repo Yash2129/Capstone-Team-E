@@ -1,4 +1,75 @@
-<div class="row text-center">
-<h1 class="text-capitalize">Welcome</h1>
-<h1>{{roleName}}</h1>
+<div class="background-container">
+  <img src="../../assets/img/img1.jpg" alt="">
+  <div class="overlay-text">
+    <h1 class="welcome1">Welcome to {{userRole}} Dashboard, <br>
+          <p class="username">{{username}}!!</p>
+          <h1>
+            </h1></h1>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+ 
+      <div *ngIf="userRole === 'HOSPITAL'" class="mt-5">
+        <div class="text-center mb-4">
+          <h3>Connected with {{hospitalList.length}} hospitals all over the country</h3>
+        </div>
+ 
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered">
+                <thead class="bg-primary text-white sticky-top">
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let hospital of hospitalList">
+                    <td>{{hospital.name}}</td>
+                    <td>{{hospital.location}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <div *ngIf="userRole === 'TECHNICIAN'" class="mt-5">
+        
+        
+            <h2 class="welcome2">Track Maintenance Status</h2>
+            
+            <div *ngIf="showError" class="error">{{ errorMessage }}</div>
+            <div class="maintenanceStatus">
+              <br>
+              <h3 class="p1">Equipment with Completed Maintenance:  &nbsp; &nbsp;{{ completedOrdersCount }}</h3>
+              <br>
+              <h3 class="p2">Equipment with Initiated Maintenance:  &nbsp; &nbsp; &nbsp; {{ initiatedOrdersCount }}</h3>
+              <br>
+            </div>
+            <ul>
+              
+            </ul>
+          </div>
+        </div>
+        
+        
+        
+          
+      </div>
+ 
+      <div *ngIf="userRole === 'SUPPLIER'" class="mt-5">
+        <div *ngIf="showError" class="error">{{ errorMessage }}</div>
+      <div class="maintenanceStatus">
+        <br>
+        <h3 class="p1">Equipment with Completed Orders:  &nbsp; &nbsp;{{ completedOrdersCount }}</h3>
+        <br>
+        <h3 class="p2">Equipment with Initiated Orders:  &nbsp; &nbsp; &nbsp; &nbsp; {{ initiatedOrdersCount }}</h3>
+        <br>
+      </div>
+      </div>
+ 
+   
+</div>
 </div>

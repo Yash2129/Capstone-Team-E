@@ -1,14 +1,13 @@
 package com.wecp.medicalequipmentandtrackingsystem.service;
 
-
 import com.wecp.medicalequipmentandtrackingsystem.entitiy.Equipment;
 import com.wecp.medicalequipmentandtrackingsystem.entitiy.Orders;
+import com.wecp.medicalequipmentandtrackingsystem.exceptions.EquipmentNotFoundException;
+import com.wecp.medicalequipmentandtrackingsystem.exceptions.OrderNotFoundException;
 import com.wecp.medicalequipmentandtrackingsystem.repository.EquipmentRepository;
 import com.wecp.medicalequipmentandtrackingsystem.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class OrderService {
     public Orders placeOrder(Long equipmentId, Orders order) {
         // Check if the equipment with the given ID exists
         Equipment equipment = equipmentRepository.findById(equipmentId)
-                .orElseThrow(() -> new EntityNotFoundException("Equipment not found with ID: " + equipmentId));
+                .orElseThrow(() -> new EquipmentNotFoundException("Equipment not found with ID: " + equipmentId));
 
         order.setEquipment(equipment);
         order.setOrderDate(new Date());
@@ -41,7 +40,7 @@ public class OrderService {
     public Orders updateOrderStatus(Long orderId, String newStatus) {
         // Check if the order with the given ID exists
         Orders existingOrder = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found with ID: " + orderId));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with ID: " + orderId));
 
         // Update the order status
         existingOrder.setStatus(newStatus);

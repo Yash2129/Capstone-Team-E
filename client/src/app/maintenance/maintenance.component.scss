@@ -1,11 +1,80 @@
+
+button.disabled {
+  cursor: not-allowed; /* Change cursor to not-allowed */
+  opacity: 0.5; /* Reduce opacity to visually indicate disabled state */
+  pointer-events: none; /* Disable pointer events */
+  /* Add any other styling you want for disabled buttons */
+}
+.search1{
+  margin-right: 35%;
+  margin-left: 2%;
+  width: 300px;
+  height: 30px;
+  font-size: medium;
+}
 .heading1{
     font-size: small;
+ 
   }
+  .bt1{
+   
+    margin-left: 2%;
+  }
+  .bt2{
+   
+    margin-left: 2%;
+    margin-right: 10%;
+  }
+  .even-row {
+    background-color: white;
+  }
+  .sortby{
+    margin-right: 9%;
+    margin-left: 75%;
+  }
+  .odd-row {
+    background-color: #e0dcdc;
+  }
+ 
+ 
+  .filter-container {
+    display: flex;
+    align-items: center;
+   
+  }
+   
+  .status-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 8px;
+ 
+    margin-left: 60%;
+ 
+  }
+   .filter-container{
+    margin-left: 0%;
+    margin-top: 3%;
+   }
+  .filter-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+   
+  .filter-button:hover {
+    background-color: #0056b3;
+  }
+ 
   .intro {
     height: 100%;
   }
   .title1{
-      margin-left: 6%;
+      margin-left: 7%;
       margin-bottom: 2%;
       margin-top: 1%;
   }
@@ -14,7 +83,10 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    
+   
+  }
+  table th{
+    background-color: #002d72;
   }
   .modal-dialog{
     background-color: aquamarine;
@@ -33,20 +105,11 @@
    
   .card {
     border-radius: .5rem;
-    background-color: #fff;
+    background-color: white;
+ 
   }
    
-  .table-scroll {
-    border-radius: .5rem;
-  }
-   
-  .table-scroll table thead th {
-    // font-size: 1.25rem;
-    font-size: medium;
-  
-  }
   thead {
     top: 0;
     position: sticky;
-   
   }

@@ -1,22 +1,28 @@
-<nav class="navbar navbar-expand-lg px-3 bg-light">
-  <img class="navbar-brand" src="../assets/img/logo.png" width="200px">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg px-3 bg-light fixed">
+  <a *ngIf="!IsLoggin" [routerLink]="['/homepage']"><img class="navbar-brand" src="../assets/img/logo.png"
+      width="200px"></a>
+  <a *ngIf="IsLoggin" [routerLink]="['/dashboard']"><img class="navbar-brand" src="../assets/img/logo.png"
+      width="200px"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse right" id="navbarNav">
-    <ul class="navbar-nav">
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul *ngIf="IsLoggin" class="navbar-nav"
+      style="width: 900px; padding-left: 10px; margin-top: -1px; display: flex; column-gap: 10px;">
       <li class="nav-item">
         <a class="nav-link" *ngIf="roleName === 'HOSPITAL'" [routerLink]="['/createhospital']">Create Hospital</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" *ngIf="roleName === 'HOSPITAL'" [routerLink]="['/schedule-maintenance']">Scheduled Maintenance</a>
+        <a class="nav-link" *ngIf="roleName === 'HOSPITAL'" [routerLink]="['/schedule-maintenance']">Scheduled
+          Maintenance</a>
 
       </li>
       <li class="nav-item">
         <a class="nav-link" *ngIf="roleName === 'HOSPITAL'" [routerLink]="['/requestequipment']">Request Equipment</a>
 
       </li>
-      
+
       <li class="nav-item">
         <a class="nav-link" *ngIf="roleName === 'TECHNICIAN'" [routerLink]="['/maintenance']">Maintenance</a>
       </li>
@@ -24,27 +30,31 @@
         <a class="nav-link" *ngIf="roleName === 'SUPPLIER'" [routerLink]="['/orders']">Orders</a>
       </li>
     </ul>
- 
+
     <!-- Login/Logout buttons -->
     <ul class="navbar-nav">
-      <li *ngIf="!IsLoggin" class="nav-item">
+      <li *ngIf="!IsLoggin" class="nav-item left-btn">
         <a class="nav-link" [routerLink]="['/homepage']">Home</a>
       </li>
-      <li *ngIf="!IsLoggin" class="nav-item">
-        <a class="nav-link" [routerLink]="['/login']">Login</a>
-      </li>
-      <li *ngIf="!IsLoggin" class="nav-item">
-        <a class="nav-link" [routerLink]="['/registration']">Register</a>
-      </li>
-      
-      <li *ngIf="IsLoggin" class="nav-item">
-        <a class="nav-link" (click)="logout()" [routerLink]="['/login']">Logout</a>
-      </li>
+      <div *ngIf="!IsLoggin">
+        <ul class="navbar-nav right">
+          <li class="nav-item">
+            <button class="nav-link main-btn" [routerLink]="['/login']">Login</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link main-btn" [routerLink]="['/registration']">Register</button>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="IsLoggin" class="right-btn">
+        <li class="nav-item">
+          <button class="nav-link danger-btn" (click)="logout()" [routerLink]="['/login']">Logout</button>
+        </li>
+      </div>
     </ul>
   </div>
 </nav>
 
 <body>
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </body>
-

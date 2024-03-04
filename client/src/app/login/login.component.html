@@ -1,5 +1,5 @@
 <section class="py-3 py-xl-8" style="background-color: #ffffff;">
-  <div class="container">
+  <div class="container padd" style="margin-left: -10px;">
 
     <div class="row gy-4 align-items-center">
       <div class="col-12 col-md-6 col-xl-7">
@@ -7,8 +7,7 @@
           
           <div class="col-12 col-xl-9">
             
-            <img src="assets/img/login.png"
-          class="img-fluid" alt="Phone image">
+            <img src="assets/img/login.png" class="img-fluid" alt="Phone image">
           
           </div>
         </div>
@@ -23,37 +22,37 @@
                 </div>
               </div>
             </div>
+            <!-- Show error message -->
+            <div *ngIf="showError" class="alert alert-danger" role="alert">
+              {{ errorMessage }}
+            </div>
             <form class="mb-3 mt-md-4" [formGroup]="itemForm" (ngSubmit)="onLogin()">
               <div class="row gy-3 overflow-hidden">
                 <div class="col-12">
                   <div class="form-floating mb-3">
                     <!-- username input -->
-                    <input type="text" class="form-control" name="username" id="username" placeholder="example123" formControlName="username"
-                      required>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="example123" formControlName="username" required>
                     <label for="username" class="form-label">Username</label>
                     <!-- username validation -->
-                    <div
-                      *ngIf="itemForm.get('username')?.invalid && (itemForm.get('username')?.dirty || itemForm.get('username')?.touched)"
-                      class="ng-dirty">
-                      <span class="text-danger">Username Invalid</span>
+                    <div *ngIf="itemForm.get('username')?.invalid && (itemForm.get('username')?.dirty || itemForm.get('username')?.touched)" class="ng-dirty">
+                      <span class="text-danger">Username is required</span>
                     </div>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="form-floating mb-3">
-                    
                     <!-- password input -->
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" formControlName="password"
-                      required>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" formControlName="password" required>
                     <label for="password" class="form-label">Password</label>
-                    <div class="input-group-addon">
-                      <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
-                    </div>
+                    <span class="field-icon">
+                      <a (click)="show=!show; toggle()">
+                        <i *ngIf="!show" class="fa fa-eye-slash"></i>
+                        <i *ngIf="show" class="fa fa-eye"></i>
+                      </a>
+                    </span>
                     <!-- password validation -->
-                    <div
-                      *ngIf="itemForm.get('password')?.invalid && (itemForm.get('password')?.dirty || itemForm.get('password')?.touched)"
-                      class="ng-dirty">
-                      <span class="text-danger">Password Invalid</span>
+                    <div *ngIf="itemForm.get('password')?.invalid && (itemForm.get('password')?.dirty || itemForm.get('password')?.touched)" class="ng-dirty">
+                      <span class="text-danger">Password is required</span>
                     </div>
                   </div>
                 </div>
@@ -66,8 +65,7 @@
             </form>
             <div class="row">
               <div>
-                <p class="mb-0  text-center">Don't have an account? <a (click)="registration()"
-                    class="text-primary fw-bold">Registration</a></p>
+                <p class="mb-0  text-center">Don't have an account? <a (click)="registration()" class="text-primary fw-bold">Registration</a></p>
               </div>
             </div>
           </div>

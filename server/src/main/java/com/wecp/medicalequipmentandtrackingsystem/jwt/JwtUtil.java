@@ -1,14 +1,18 @@
 package com.wecp.medicalequipmentandtrackingsystem.jwt;
 
-
 import com.wecp.medicalequipmentandtrackingsystem.entitiy.User;
 import com.wecp.medicalequipmentandtrackingsystem.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import java.security.Key;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -43,15 +47,17 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(getSignKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
     public Claims extractAllClaims(String token) {
         Claims claims;
         try {
-            claims = Jwts.parser()
-                    .setSigningKey(secret)
+            claims = Jwts
+                    .parserBuilder()
+                    .setSigningKey(getSignKey())
+                    .build()
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
@@ -61,16 +67,18 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(secret)
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
     }
 
     public boolean isTokenExpired(String token) {
-        Date expirationDate = Jwts.parser()
-                .setSigningKey(secret)
+        Date expirationDate = Jwts.parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getExpiration();
@@ -80,5 +88,10 @@ public class JwtUtil {
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private Key getSignKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

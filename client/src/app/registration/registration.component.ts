@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { map } from 'rxjs';
 import { HttpService } from '../../services/http.service';
 
 
 @Component({
   selector: 'app-registration',
-  templateUrl: './registration.component.html'
-
+  templateUrl: './registration.component.html',
+  styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent {
 
@@ -19,24 +20,68 @@ export class RegistrationComponent {
   responseError: any;
   showError: boolean = false;
   userModel: any = { role: '', email: '', password: '', username: '' };
+
+  usernameExists = false;
+  showPass: boolean = false;
+  showRepass: boolean = false;
+
   constructor(public router: Router, private bookService: HttpService, private formBuilder: FormBuilder) {
 
     this.itemForm = this.formBuilder.group({
-      email: [this.formModel.email, [Validators.required, Validators.email]],
-      password: [this.formModel.password, [Validators.required]],
+      email: [this.formModel.email, [Validators.required, Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      password: [this.formModel.password, [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$#!%*?&])[A-Za-z\d$@$!%*?&].{7,}$")]],
       role: [this.formModel.role, [Validators.required]],
-      username: [this.formModel.username, [Validators.required]],
-      repassword: [this.formModel.repassword, [Validators.required]]
-    });
+      username: [this.formModel.username, [Validators.required/*, Validators.pattern("^[a-zA-Z0-9._-]{5,20}$")*/], [this.validateUsername.bind(this)]],
+      repassword: [this.formModel.repassword, [Validators.required]],
+    },
+    {
+      validator:this.matchPassword
+    },
+    );
   }
 
   ngOnInit(): void {
   }
 
+  
+
+
+  validateUsername(control: FormControl) {
+    const username = control.value;
+    return this.bookService.checkUsernameExists(username).pipe(
+      map(res => {
+        this.usernameExists = res;
+        return res ? { usernameExists: true} : null;
+      })
+    );
+  }
+
+
+
+  matchPassword(control: AbstractControl) : ValidationErrors | null {    
+    const password = control.get('password');
+    const repassword = control.get('repassword');
+    if(password?.value === repassword?.value) {
+      return null;
+    } else {
+      return {notMatch:true};
+    }
+  }
+
+  togglePassword() {
+    const password = document.getElementById('password');
+    const type = password?.getAttribute('type') === 'password' ? 'text' : 'password';
+    password?.setAttribute('type', type);
+  }
+
+  toggleRepassword() {
+    const repassword = document.getElementById('repassword');
+    const type = repassword?.getAttribute('type') === 'password' ? 'text' : 'password';
+    repassword?.setAttribute('type', type);
+  }
 
   onRegister() {
     if (this.itemForm.valid) {
-      if (this.itemForm.value.password === this.itemForm.value.repassword) {
         this.userModel.role = this.itemForm.value.role;
         this.userModel.email = this.itemForm.value.email;
         this.userModel.username = this.itemForm.value.username;
@@ -55,12 +100,6 @@ export class RegistrationComponent {
             this.showError = true;
             this.responseError = 'An error occurred while registering.';
           })
-      }
-      else {
-        this.showError = true;
-        this.responseError = 'Password do not match';
-      }
-
     }
     else {
       this.itemForm.markAllAsTouched();

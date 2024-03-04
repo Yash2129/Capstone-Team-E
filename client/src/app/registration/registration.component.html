@@ -1,5 +1,5 @@
 <section class="py-3 py-xl-8" style="background-color: #ffffff;">
-  <div class="container">
+  <div class="container padd" style="margin-left: -10px;">
 
     <div class="row gy-4 align-items-center">
       <div class="col-12 col-md-6 col-xl-7">
@@ -26,13 +26,16 @@
                   <div class="form-floating mb-3">
                     <!-- username input -->
                     <input type="text" class="form-control" name="username" id="username" placeholder="example123"
-                      formControlName="username" required>
+                      formControlName="username" pattern="^[a-zA-Z0-9._-]{5,20}$" required>
                     <label for="username" class="form-label">Username</label>
                     <!-- username validation -->
                     <div
-                      *ngIf="itemForm.get('username')?.invalid && (itemForm.get('username')?.dirty || itemForm.get('username')?.touched)"
+                      *ngIf="!usernameExists && itemForm.get('username')?.invalid && (itemForm.get('username')?.dirty || itemForm.get('username')?.touched)"
                       class="ng-dirty">
-                      <span class="text-danger">Username Invalid</span>
+                      <span class="text-danger">Username is required [Min 5 and Max 20 chars] </span>
+                    </div>
+                    <div *ngIf="usernameExists" class="ng-dirty">
+                      <span class="text-danger">Username already exists.</span>
                     </div>
                   </div>
                 </div>
@@ -44,9 +47,13 @@
                     <label for="email" class="form-label">Email</label>
                     <!-- email validation -->
                     <div
-                      *ngIf="itemForm.get('email')?.invalid && (itemForm.get('email')?.dirty || itemForm.get('email')?.touched)"
+                      *ngIf="itemForm.get('email')?.hasError('required') && (itemForm.get('email')?.dirty || itemForm.get('email')?.touched)"
                       class="ng-dirty">
-                      <span class="text-danger">Email Invalid</span>
+                      <span class="text-danger">Email is required.</span>
+                    </div>
+                    <div *ngIf="itemForm.get('email')?.hasError('pattern') && itemForm.get('password')?.touched"
+                      class="ng-dirty">
+                      <span class="text-danger">Email ID invalid.</span>
                     </div>
                   </div>
                 </div>
@@ -56,11 +63,21 @@
                     <input type="password" class="form-control" name="password" id="password" placeholder="Password"
                       formControlName="password" required>
                     <label for="password" class="form-label">Password</label>
+                    <span class="field-icon">
+                      <a (click)="showPass=!showPass; togglePassword()">
+                        <i *ngIf="!showPass" class="fa fa-eye-slash"></i>
+                        <i *ngIf="showPass" class="fa fa-eye"></i>
+                      </a>
+                    </span>
                     <!-- password validation -->
-                    <div
-                      *ngIf="itemForm.get('password')?.invalid && (itemForm.get('password')?.dirty || itemForm.get('password')?.touched)"
+                    <div *ngIf="itemForm.get('password')?.hasError('required') && itemForm.get('password')?.touched"
                       class="ng-dirty">
-                      <span class="text-danger">Password Invalid</span>
+                      <span class="text-danger">Password is required</span>
+                    </div>
+                    <div *ngIf="itemForm.get('password')?.hasError('pattern') && itemForm.get('password')?.touched"
+                      class="ng-dirty">
+                      <span class="text-danger">Enter strong password! [Contain atleast 1 uppercase, 1 lowercase, 1
+                        numeric , 1 special character, Min 8 characters]</span>
                     </div>
                   </div>
                 </div>
@@ -68,13 +85,24 @@
                   <div class="form-floating mb-3">
                     <!-- password input -->
                     <input type="password" class="form-control" name="repassword" id="repassword"
-                      placeholder="Re-confirm Password" formControlName="repassword" validateEqual="password" required>
-                    <label for="repassword" class="form-label">Re-confirm Password</label>
-                    <!--reconfirm password validation -->
-                    <div
+                      placeholder="Confirm Password" formControlName="repassword" validateEqual="password" required>
+                    <label for="repassword" class="form-label">Confirm Password</label>
+                    <span class="field-icon">
+                      <a (click)="showRepass=!showRepass; toggleRepassword()">
+                        <i *ngIf="!showRepass" class="fa fa-eye-slash"></i>
+                        <i *ngIf="showRepass" class="fa fa-eye"></i>
+                      </a>
+                    </span>
+                    <!-- <div
                       *ngIf="itemForm.get('repassword')?.invalid && (itemForm.get('repassword')?.dirty || itemForm.get('repassword')?.touched)"
                       class="ng-dirty">
-                      <span class="text-danger">Confirm Password is required</span>
+                      <span class="text-danger">Password is required</span>
+                    </div> -->
+                    <!--reconfirm password validation -->
+                    <div
+                      *ngIf="itemForm.errors?.['notMatch'] && (itemForm.get('repassword')?.dirty || itemForm.get('repassword')?.touched)"
+                      class="text-danger">
+                      <span>Password does not match.</span>
                     </div>
                   </div>
                 </div>
@@ -91,7 +119,7 @@
                     <div
                       *ngIf="itemForm.get('role')?.invalid && (itemForm.get('role')?.dirty || itemForm.get('role')?.touched)"
                       class="ng-dirty">
-                      <span class="text-danger">Role Invalid</span>
+                      <span class="text-danger">Role is required</span>
                     </div>
                   </div>
                 </div>
