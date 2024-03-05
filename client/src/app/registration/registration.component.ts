@@ -31,19 +31,19 @@ export class RegistrationComponent {
       email: [this.formModel.email, [Validators.required, Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       password: [this.formModel.password, [Validators.required, Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$#!%*?&])[A-Za-z\d$@$!%*?&].{7,}$")]],
       role: [this.formModel.role, [Validators.required]],
-      username: [this.formModel.username, [Validators.required/*, Validators.pattern("^[a-zA-Z0-9._-]{5,20}$")*/], [this.validateUsername.bind(this)]],
+      username: [this.formModel.username, [Validators.required], [this.validateUsername.bind(this)]],
       repassword: [this.formModel.repassword, [Validators.required]],
     },
-    {
-      validator:this.matchPassword
-    },
+      {
+        validator: this.matchPassword
+      },
     );
   }
 
   ngOnInit(): void {
   }
 
-  
+
 
 
   validateUsername(control: FormControl) {
@@ -51,20 +51,20 @@ export class RegistrationComponent {
     return this.bookService.checkUsernameExists(username).pipe(
       map(res => {
         this.usernameExists = res;
-        return res ? { usernameExists: true} : null;
+        return res ? { usernameExists: true } : null;
       })
     );
   }
 
 
 
-  matchPassword(control: AbstractControl) : ValidationErrors | null {    
+  matchPassword(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password');
     const repassword = control.get('repassword');
-    if(password?.value === repassword?.value) {
+    if (password?.value === repassword?.value) {
       return null;
     } else {
-      return {notMatch:true};
+      return { notMatch: true };
     }
   }
 
@@ -82,24 +82,24 @@ export class RegistrationComponent {
 
   onRegister() {
     if (this.itemForm.valid) {
-        this.userModel.role = this.itemForm.value.role;
-        this.userModel.email = this.itemForm.value.email;
-        this.userModel.username = this.itemForm.value.username;
-        this.userModel.password = this.itemForm.value.password;
+      this.userModel.role = this.itemForm.value.role;
+      this.userModel.email = this.itemForm.value.email;
+      this.userModel.username = this.itemForm.value.username;
+      this.userModel.password = this.itemForm.value.password;
 
-        this.showMessage = false;
-        this.showMessage = false;
-        this.bookService.registerUser(this.userModel).subscribe(data => {
-          debugger;
-          this.showMessage = true;
-          this.responseMessage = 'Welcome ' + data.username + " you are successfully registered";
-          this.itemForm.reset();
+      this.showMessage = false;
+      this.showMessage = false;
+      this.bookService.registerUser(this.userModel).subscribe(data => {
+        debugger;
+        this.showMessage = true;
+        this.responseMessage = 'Welcome ' + data.username + " you are successfully registered";
+        this.itemForm.reset();
 
-        },
-          (error: any) => {
-            this.showError = true;
-            this.responseError = 'An error occurred while registering.';
-          })
+      },
+        (error: any) => {
+          this.showError = true;
+          this.responseError = 'An error occurred while registering.';
+        })
     }
     else {
       this.itemForm.markAllAsTouched();

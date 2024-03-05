@@ -1,13 +1,14 @@
-.heading1{
+.heading1 {
   font-size: small;
-  
+
 }
+
 .filter-container {
   display: flex;
   align-items: center;
- 
+
 }
- 
+
 .status-select {
   padding: 8px;
   border: 1px solid #ccc;
@@ -17,12 +18,15 @@
   margin-left: 60%;
 
 }
-.searchInput{
+
+.searchInput {
   margin-left: 50px;
 }
- .filter-container{
-margin-left: 45%;
- }
+
+.filter-container {
+  margin-left: 45%;
+}
+
 .filter-button {
   padding: 8px 16px;
   margin-left: 10px;
@@ -35,11 +39,12 @@ margin-left: 45%;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
- 
+
 .filter-button:hover {
   background-color: #0056b3;
 }
-.input{
+
+.input {
   margin-right: 10px;
   margin-bottom: 10px;
   height: 35px;
@@ -53,53 +58,61 @@ margin-left: 45%;
 .intro {
   height: 100%;
 }
-.title1{
-    margin-left: 6%;
-    margin-bottom: 2%;
-    margin-top: 1%;
+
+.title1 {
+  margin-left: 6%;
+  margin-bottom: 2%;
+  margin-top: 1%;
 }
+
 table td,
 table th {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
- 
+
 }
 
- .modal-header{
-  background-color:  #002d72;
+.modal-header {
+  background-color: #002d72;
   color: white;
- }
+}
+
 thead th {
   color: #fff;
   font-size: smaller;
 }
- 
+
 .card {
   border-radius: .5rem;
   background-color: #fff;
 }
- 
+
 .table-scroll {
   border-radius: .5rem;
 }
- 
+
 .table-scroll table thead th {
   // font-size: 1.25rem;
   font-size: medium;
- 
+
 }
+
 thead {
   top: 0;
   position: sticky;
- 
+
 }
-.input{
-  font-style:italic;
+
+.input {
+  font-style: italic;
 }
-.bg-image h-100{
+
+.bg-image h-100 {
   background-color: white;
 }
-.tablehead{
+
+.tablehead {
   background-color: #002d72;
+  z-index: 8;
 }

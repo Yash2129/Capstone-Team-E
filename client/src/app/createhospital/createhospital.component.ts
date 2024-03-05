@@ -15,13 +15,10 @@ export class CreatehospitalComponent implements OnInit {
   showError: boolean = false;
   errorMessage: any;
   hospitalList: any = [];
-
   showMessage: boolean = false;
   responseMessage: any;
-
   //Search Properties
-  searchInput:string=''; //For Searching
-
+  searchInput: string = ''; //For Searching
   // Pagination properties
   pageSize: number = 5; // Number of items per page
   currentPage: number = 1; // Current page number
@@ -42,22 +39,25 @@ export class CreatehospitalComponent implements OnInit {
     });
   }
 
+  // On initialization, loading the hospital list
   ngOnInit(): void {
     this.getHospital();
   }
 
+  // To get the list of hospital
   getHospital() {
     this.hospitalList = [];
     this.httpService.getHospital().subscribe((data: any) => {
       this.hospitalList = data;
       this.totalPages = Math.ceil(this.hospitalList.length / this.pageSize);
-      this.setPage(this.currentPage); 
+      this.setPage(this.currentPage);
     }, error => {
       this.showError = true;
       this.errorMessage = error;
     });
   }
 
+  // To submit the form
   onSubmit() {
     if (this.itemForm.valid) {
       this.showError = false;
@@ -73,10 +73,12 @@ export class CreatehospitalComponent implements OnInit {
     }
   }
 
+  // To set the equipment
   Addequipment(value: any) {
     this.equipmentForm.controls['hospitalId'].setValue(value.id);
   }
 
+  // To add the equipment
   submitEquipment() {
     if (this.equipmentForm.valid) {
       this.showMessage = false;
@@ -102,16 +104,22 @@ export class CreatehospitalComponent implements OnInit {
     this.paginatedHospitalList = this.hospitalList.slice(startIndex, endIndex);
     this.calculatePageNumbers();
   }
+
+  // For going to previous page
   prevPage() {
     if (this.currentPage > 1) {
       this.setPage(this.currentPage - 1);
     }
   }
+
+  // For going to next page
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.setPage(this.currentPage + 1);
     }
   }
+
+  // To calculate the page numbers
   calculatePageNumbers() {
     this.pages = [];
     for (let i = 1; i <= this.totalPages; i++) {
@@ -120,23 +128,25 @@ export class CreatehospitalComponent implements OnInit {
   }
 
   // For Searching
-  filterHospitals(hospitals: any[], search: string | null){
-    if(!search){
+  filterHospitals(hospitals: any[], search: string | null) {
+    if (!search) {
       return hospitals;
     }
     search = search.toLowerCase();
-    return hospitals.filter(hospital => hospital.name.toLowerCase().includes(search) || 
-                                        hospital.location.toLowerCase().includes(search) ||
-                                        hospital.id.toString().toLowerCase().includes(search));
+    return hospitals.filter(hospital => hospital.name.toLowerCase().includes(search) ||
+      hospital.location.toLowerCase().includes(search) ||
+      hospital.id.toString().toLowerCase().includes(search));
   }
+
+  // To get the hospital while searching
   getHospitalsViaInput() {
     this.paginatedHospitalList = [];
     this.httpService.getHospital().subscribe((hospitals: any) => {
-      this.hospitalList=hospitals;
-      const filteredHospitals=this.filterHospitals(hospitals,this.searchInput);
-      this.totalPages=Math.ceil(filteredHospitals.length/this.pageSize);
-      this.paginatedHospitalList=filteredHospitals.slice(0,this.pageSize);
-      this.currentPage=1;
+      this.hospitalList = hospitals;
+      const filteredHospitals = this.filterHospitals(hospitals, this.searchInput);
+      this.totalPages = Math.ceil(filteredHospitals.length / this.pageSize);
+      this.paginatedHospitalList = filteredHospitals.slice(0, this.pageSize);
+      this.currentPage = 1;
       this.calculatePageNumbers();
     }, error => {
 
@@ -144,10 +154,17 @@ export class CreatehospitalComponent implements OnInit {
       this.errorMessage = error;
     });
   }
+
+  // For searching
   onSearch(event: any) {
     const searchValue = event.target.value;
     this.searchInput = searchValue;
     this.getHospitalsViaInput();
+  }
+
+  // To close the window
+  close() {
+    window.location.reload();
   }
 
 }

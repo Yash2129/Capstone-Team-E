@@ -3,14 +3,16 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from '../../services/http.service';
- 
+
 @Component({
   selector: 'app-maintenance',
   templateUrl: './maintenance.component.html',
   styleUrls: ['./maintenance.component.scss']
 })
+
+// Maintenance component
 export class MaintenanceComponent implements OnInit {
- 
+
   // Define properties
   selectedStatus: string = '';
   searchInput: string = '';
@@ -26,7 +28,7 @@ export class MaintenanceComponent implements OnInit {
   currentPage: number = 1; // Current page number
   totalPages: number = 0; // Total number of pages
   pages: number[] = []; // Array to hold page numbers for pagination
- 
+
   constructor(public router: Router, public httpService: HttpService, private formBuilder: FormBuilder) {
     // Initialize form group
     this.itemForm = this.formBuilder.group({
@@ -37,21 +39,21 @@ export class MaintenanceComponent implements OnInit {
       maintenanceId: [''],
     });
   }
- 
+
   ngOnInit(): void {
     this.getMaintenance();   // Fetch maintenance data on component initialization
   }
- 
+
   dateValidator(control: AbstractControl): ValidationErrors | null {
     const datePattern = /^\d{4}-\d{2}-\d{2}$/;
- 
+
     if (!datePattern.test(control.value)) {
       return { invalidDate: true };
     }
- 
+
     return null;
   }
- 
+
   // Method to fetch maintenance data
   getMaintenance() {
     this.maintenanceList = []; // Clear maintenance list
@@ -61,11 +63,10 @@ export class MaintenanceComponent implements OnInit {
       this.setPage(1); // Set initial page
     }, error => {
       this.showError = true;
-      this.errorMessage = "An error occurred while fetching maintenance data. Please try again later.";
-      console.error('Maintenance data error:', error);
+      this.errorMessage = error;
     });
   }
- 
+
   // Method to filter maintenance data by status
   filterMaintenanceByStatus(data: any[], status: string | null): any[] {
     if (!status) {
@@ -77,14 +78,14 @@ export class MaintenanceComponent implements OnInit {
       return [];
     }
   }
- 
+
   // Method to handle search input
   onSearchInput(event: any) {
     const searchValue = event.target.value;
     this.searchInput = searchValue;
     this.getMaintenanceViaInput();
   }
- 
+
   // Method to fetch maintenance data via input
   getMaintenanceViaInput() {
     this.maintenanceList = [];
@@ -94,11 +95,10 @@ export class MaintenanceComponent implements OnInit {
       this.setPage(1); // Reset pagination to the first page
     }, error => {
       this.showError = true;
-      this.errorMessage = "An error occurred while fetching maintenance data. Please try again later.";
-      console.error('Maintenance data error:', error);
+      this.errorMessage = error;
     });
   }
- 
+
   // Method to filter maintenance data by name
   filterMaintenanceByName(maintenance: any[], search: string | null): any[] {
     if (!search) {
@@ -111,7 +111,7 @@ export class MaintenanceComponent implements OnInit {
       x.equipment.hospital.id.toString().includes(search)
     );
   }
- 
+
   // Method to handle page change
   setPage(page: number) {
     this.currentPage = page;
@@ -120,19 +120,19 @@ export class MaintenanceComponent implements OnInit {
     this.paginatedMaintenanceList = this.maintenanceList.slice(startIndex, endIndex);
     this.calculatePageNumbers();
   }
- 
+
   prevPage() {
     if (this.currentPage > 1) {
       this.setPage(this.currentPage - 1);
     }
   }
- 
+
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.setPage(this.currentPage + 1);
     }
   }
- 
+
   calculatePageNumbers() {
     this.totalPages = Math.ceil(this.totalItems / this.pageSize);
     this.pages = [];
@@ -140,7 +140,7 @@ export class MaintenanceComponent implements OnInit {
       this.pages.push(i);
     }
   }
- 
+
   // Method to edit maintenance record
   edit(val: any) {
     const scheduledDate = new Date(val.scheduledDate);
@@ -153,7 +153,7 @@ export class MaintenanceComponent implements OnInit {
       equipmentId: val.equipmentId,
       maintenanceId: val.id
     });
- 
+
     // Disable edit button if status is 'completed'
     if (val.status === 'Completed') {
       this.itemForm.disable();
@@ -161,7 +161,7 @@ export class MaintenanceComponent implements OnInit {
       this.itemForm.enable();
     }
   }
- 
+
   // Method to update maintenance record
   update() {
     if (this.itemForm.valid) {
@@ -173,8 +173,7 @@ export class MaintenanceComponent implements OnInit {
         }, error => {
           // Handle error
           this.showError = true;
-          this.errorMessage = "An error occurred while updating maintenance record. Please try again later.";
-          console.error('Maintenance update error:', error);
+          this.errorMessage = error;
         });
       } else {
         this.itemForm.markAllAsTouched();

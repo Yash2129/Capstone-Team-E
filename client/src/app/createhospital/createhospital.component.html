@@ -1,7 +1,5 @@
-<section class="py-3 py-xl-8" >
-
+<section class="py-3 py-xl-8">
   <div class="container" id="createhospital">
-
     <!--
       ////////////////////////////
        For the "Add Hospital Form"
@@ -17,15 +15,16 @@
               </div>
             </div>
           </div>
+          <!-- Adding hospital -->
           <form class="mb-3 mt-md-4" [formGroup]="itemForm" (ngSubmit)="onSubmit()">
             <div class="row gy-3 overflow-hidden">
               <div class="col-12">
                 <div class="form-floating mb-3">
-                  <!-- name input -->
+                  <!-- Name input -->
                   <input type="text" name="name" formControlName="name" [ngModel]="formModel.name" class="form-control"
                     id="name" placeholder="example123" required>
                   <label for="content" class="form-label">Name</label>
-                  <!-- name validation -->
+                  <!-- Name validation -->
                   <div
                     *ngIf="itemForm.controls['name'].invalid && (itemForm.controls['name'].dirty || itemForm.controls['name'].touched)"
                     class="ng-dirty">
@@ -37,11 +36,11 @@
               </div>
               <div class="col-12">
                 <div class="form-floating mb-3">
-                  <!-- location input -->
+                  <!-- Location input -->
                   <input type="text" name="location" formControlName="location" [ngModel]="formModel.name"
                     class="form-control" id="location" placeholder="Location" required>
                   <label for="location" class="form-label">Location</label>
-                  <!-- location validation -->
+                  <!-- Location validation -->
                   <div
                     *ngIf="itemForm.controls['location'].invalid && (itemForm.controls['location'].dirty || itemForm.controls['location'].touched)"
                     class="ng-dirty">
@@ -53,6 +52,7 @@
               </div>
               <div class="col-12">
                 <div class="d-grid">
+                  <!-- Submit button for adding the hospital -->
                   <button class="btn btn-primary" type="submit" style="font-weight: bold;">Submit</button>
                 </div>
               </div>
@@ -62,15 +62,12 @@
       </div>
     </div>
   </div>
-
   <!--
-        ////////////////////////////
-        For the "Hospital Information Field"
-        ////////////////////////////
-      -->
-
+    ////////////////////////////
+    For the "Hospital Information Field"
+    ////////////////////////////
+  -->
   <div class="row gy-7 align-items-center ">
-
     <div class="col-12 col-md-6 col-xl-10" style="float: right; margin-left: 70px;">
       <!--Title-->
       <div>
@@ -82,18 +79,13 @@
       </div>
       <!--Hospital Table-->
       <div class="card">
-
         <div class="card-body p-0">
-          
           <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
             style="position: left; height: auto;">
-            
             <table class="table table-striped mb-0 ">
-
               <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
                 rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
                 crossorigin="anonymous">
-                
               <thead style="background-color: #002d72;">
                 <tr>
                   <th scope="col" style="color:white; text-align: center;">Sr.No</th>
@@ -133,13 +125,11 @@
           </ul>
         </nav>
       </div>
-
       <!--
-      ////////////////////////////
-       For the Popup
-      ////////////////////////////
-    -->
-
+        ////////////////////////////
+        For the Popup form
+        ////////////////////////////
+      -->
       <div class="modal fade" id="driverModal" tabindex="-1" aria-labelledby="driverModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -148,14 +138,17 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+              <!-- Assign Equipment form -->
               <form class="mb-3 mt-md-4" [formGroup]="equipmentForm" (ngSubmit)="submitEquipment()">
                 <div class="row">
                   <div class="col-md-12">
                     <div class="mb-3">
+                      <!-- Name input -->
                       <input type="hidden" name="hospitalId" id="hospitalId" formControlName="hospitalId">
                       <label for="content" class="form-label ">Name</label>
                       <input type="text" name="name" formControlName="name" class="form-control" id="name"
                         placeholder="name">
+                      <!-- Name validation -->
                       <div
                         *ngIf="equipmentForm.controls['name'].invalid && (equipmentForm.controls['name'].dirty || equipmentForm.controls['name'].touched)"
                         class="ng-dirty">
@@ -168,9 +161,11 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="mb-3">
+                        <!-- Description input -->
                         <label for="description" class="form-label ">Description</label>
                         <input type="text" name="description" formControlName="description" class="form-control"
                           id="description" placeholder="description">
+                        <!-- Description validation -->
                         <div
                           *ngIf="equipmentForm.controls['description'].invalid && (equipmentForm.controls['description'].dirty || equipmentForm.controls['description'].touched)"
                           class="ng-dirty">
@@ -182,6 +177,7 @@
                     </div>
                   </div>
                 </div>
+                <!-- Displaying error message -->
                 <div *ngIf="showMessage" class="alert alert-success mt-4" role="alert">
                   {{responseMessage}}
                 </div>
@@ -189,7 +185,8 @@
                   {{errorMessage}}
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="close()">Close</button>
                   <button type="submit" class="btn btn-primary">Save</button>
                 </div>
               </form>
@@ -197,8 +194,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
-
 </section>

@@ -1,10 +1,11 @@
-<h1 class="title1">Manage Orders</h1> 
+<h1 class="title1">Manage Orders</h1>
 
 <!-- html components to filter the orders using the hospital name and order status -->
 <div class="searchInput">
   <div class="filter-container">
-    <input type="text" [(ngModel)]="searchInput" (input)="onSearchInput($event)" class="input" placeholder="Hospital Name">
-    
+    <input type="text" [(ngModel)]="searchInput" (input)="onSearchInput($event)" class="input"
+      placeholder="Hospital Name">
+
     <select class="bt1 btn btn-sm btn-info dropdown-toggle dropdown" [(ngModel)]="selectedStatus">
       <option value="">All</option>
       <option value="Initiated">Initiated</option>
@@ -19,15 +20,18 @@
 <!-- html components to display orders -->
 <div class="bg-image h-100">
   <div class="mask d-flex align-items-center h-100">
-   
+
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12">
           <div class="card">
             <div class="card-body p-0">
-              <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; height: 700px">
+              <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                style="position: relative; height: 700px">
                 <table class="table table-striped mb-0">
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+                  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+                    rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+                    crossorigin="anonymous">
                   <thead class="tablehead">
                     <tr class="heading1">
                       <th scope="col">Sr.No</th>
@@ -74,26 +78,26 @@
 
 <!-- html components to display dialog box to change order status -->
 <div class="modal fade" id="driverModal" tabindex="-1" aria-labelledby="driverModalLabel" aria-hidden="true">
-<div class="modal-dialog">
- <div class="modal-content">
-   <div class="modal-header">
-     <h5 class="modal-title" id="driverModalLabel">Update Status </h5>
-     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-   </div>
-   <div class="modal-body">
-     <p>Do you want to mark the status as <b>Completed</b>?</p>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="driverModalLabel">Update Status </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Do you want to mark the status as <b>Completed</b>?</p>
 
-     <div *ngIf="showMessage" class="alert alert-success mt-4" role="alert">
-       {{responseMessage}}
-     </div>
-     <div *ngIf="showError" class="alert alert-danger" role="alert">
-       {{errorMessage}}
-     </div>
-   </div>
-   <div class="modal-footer">
-     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-     <button type="button" class="btn btn-primary" (click)="update()">Yes</button>
-   </div>
- </div>
-</div>
+        <div *ngIf="showMessage" class="alert alert-success mt-4" role="alert">
+          {{responseMessage}}
+        </div>
+        <div *ngIf="showError" class="alert alert-danger" role="alert">
+          {{errorMessage}}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="update()">Yes</button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   toggle() {
     const password = document.getElementById('password');
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/dashboard');
           setTimeout(() => {
             window.location.reload();
-          }, 1000);
+          }, 1);
         } else {
           // Incorrect credentials
           this.showError = true;
@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
           // Default error message
           this.errorMessage = "An error occurred while logging in. Please try again later.";
         }
-        
+
       });
     } else {
       // Form validation failed

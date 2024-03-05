@@ -23,6 +23,7 @@ public class EquipmentService {
     @Autowired
     private HospitalRepository hospitalRepository; // Repository for accessing Hospital entities
 
+    // Method to add the equipment
     public Equipment addEquipment(Long hospitalId, Equipment equipment) { // Method to add new equipment to a hospital
         // Check if the hospital with the given ID exists
         Hospital hospital = hospitalRepository.findById(hospitalId)
@@ -31,6 +32,7 @@ public class EquipmentService {
         return equipmentRepository.save(equipment); // Save the equipment to the database
     }
 
+    // Method to get the list of equipments
     public List<Equipment> getAllEquipmentOfHospital(Long hospitalId) {
         return equipmentRepository.findByHospitalId(hospitalId); // Retrieve equipments by hospitalId
     }

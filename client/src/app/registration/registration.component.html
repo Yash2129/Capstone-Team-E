@@ -32,7 +32,7 @@
                     <div
                       *ngIf="!usernameExists && itemForm.get('username')?.invalid && (itemForm.get('username')?.dirty || itemForm.get('username')?.touched)"
                       class="ng-dirty">
-                      <span class="text-danger">Username is required [Min 5 and Max 20 chars] </span>
+                      <span class="text-danger">Username is required [Min 5 and Max 20 chars without space] </span>
                     </div>
                     <div *ngIf="usernameExists" class="ng-dirty">
                       <span class="text-danger">Username already exists.</span>

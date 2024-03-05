@@ -32,15 +32,19 @@ public class HospitalController {
     @Autowired
     private HospitalService hospitalService;  // Instance variable that holds a reference to an HospitalService object
 
-    @PostMapping("/api/hospital/create")
+    @PostMapping("/api/hospital/create") // Endpoint to create a new hospital
     public ResponseEntity<Hospital> createHospital(@RequestBody Hospital hospital) {
+        // Creating the hospital 
         Hospital createdHospital = hospitalService.createHospital(hospital);
+        // Returning response
         return new ResponseEntity<>(createdHospital, HttpStatus.CREATED);
     }
 
-    @GetMapping("/api/hospitals")
+    @GetMapping("/api/hospitals")  // Endpoint to get the hospitals
     public ResponseEntity<List<Hospital>> getAllHospitals() {
+        // Getting the list of hospitals
         List<Hospital> hospitals = hospitalService.getAllHospitals();
+        //Returning response
         return new ResponseEntity<>(hospitals, HttpStatus.OK);
     }
 
@@ -48,7 +52,7 @@ public class HospitalController {
     public ResponseEntity<Equipment> addEquipment(@RequestParam Long hospitalId, @RequestBody Equipment equipment) {
         //Adding equipment to specific hospital by using specified hospitalId
         Equipment addedEquipment = equipmentService.addEquipment(hospitalId, equipment);  
-        //Returning response with added equipment 
+        //Returning response
         return new ResponseEntity<>(addedEquipment, HttpStatus.CREATED);
     }
 
@@ -56,20 +60,23 @@ public class HospitalController {
     public ResponseEntity<List<Equipment>> getAllEquipmentsOfHospital(@PathVariable Long hospitalId) {
         //Get all the equipments by using the hospitalId
         List<Equipment> equipments = equipmentService.getAllEquipmentOfHospital(hospitalId);
-        //Returning response with equipment list
+        //Returning response 
         return new ResponseEntity<>(equipments, HttpStatus.OK);
     }
 
-    @PostMapping("/api/hospital/maintenance/schedule")
-    public ResponseEntity<Maintenance> scheduleMaintenance(@RequestParam Long equipmentId,
-            @RequestBody Maintenance maintenance) {
+    @PostMapping("/api/hospital/maintenance/schedule") // Endpoint to schedule a new maintenance
+    public ResponseEntity<Maintenance> scheduleMaintenance(@RequestParam Long equipmentId, @RequestBody Maintenance maintenance) {
+        // Adding the maintenance
         Maintenance scheduledMaintenance = maintenanceService.scheduleMaintenance(equipmentId, maintenance);
+        // Returning response
         return new ResponseEntity<>(scheduledMaintenance, HttpStatus.CREATED);
     }
 
-    @PostMapping("/api/hospital/order")
+    @PostMapping("/api/hospital/order") // Endpoint to add a order in the hospital
     public ResponseEntity<Orders> placeOrder(@RequestParam Long equipmentId, @RequestBody Orders order) {
+        // Adding the order
         Orders placedOrder = orderService.placeOrder(equipmentId, order);
+        // Returning response
         return new ResponseEntity<>(placedOrder, HttpStatus.CREATED);
     }
 }

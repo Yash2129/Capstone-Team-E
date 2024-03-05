@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from '../../services/http.service';
 import { AuthService } from '../../services/auth.service';
-import { ThisReceiver } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-dashbaord',
   templateUrl: './dashbaord.component.html',
   styleUrls: ['./dashbaord.component.scss']
 })
+
+// Dashboard component
 export class DashbaordComponent implements OnInit{
-  itemForm: FormGroup;
-  equipmentForm: FormGroup;
+
+  // Dashboard fields
   formModel: any = { status: null };
   showError: boolean = false;
   errorMessage: any;
@@ -27,19 +28,11 @@ export class DashbaordComponent implements OnInit{
   initiatedOrdersCount: number = 0;
   userRole: any ='';
   username: any ='';
-  constructor(public router: Router, public httpService: HttpService, private formBuilder: FormBuilder, private authService: AuthService) {
-    this.itemForm = this.formBuilder.group({
-      name: [this.formModel.name, [Validators.required]],
-      location: [this.formModel.location, [Validators.required]],
-    });
-
-    this.equipmentForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      hospitalId: ['', [Validators.required]],
-    });
+  constructor(public router: Router, public httpService: HttpService, private authService: AuthService) {
+    
   }
 
+  // on initially loading the webpage
   ngOnInit(): void {
     
     this.userRole=this.authService.getRole;
@@ -55,6 +48,7 @@ export class DashbaordComponent implements OnInit{
     }
   }
 
+  // retrieving the list of hospitals and handling the error
   getHospital() {
     this.hospitalList = [];
     this.httpService.getHospital().subscribe((data: any) => {
@@ -66,7 +60,7 @@ export class DashbaordComponent implements OnInit{
     });
   }
 
-  
+  // retrieving the list of maintenance equipments and handling the error
   getMaintenance() {
     this.httpService.getMaintenance().subscribe(
       (data: any[]) => {
@@ -81,6 +75,7 @@ export class DashbaordComponent implements OnInit{
     );
   }
 
+  // Retrieving the count based on status
   calculateCounts() {
     this.completedOrdersCount = this.maintenanceList.filter(maintenance => maintenance.status === 'Complete').length;
     this.initiatedOrdersCount = this.maintenanceList.filter(maintenance => maintenance.status === 'Initiated').length;
@@ -90,7 +85,6 @@ export class DashbaordComponent implements OnInit{
     this.initiatedOrdersCount = this.ordersList.filter(order => order.status === 'Initiated').length;
   }
 
-  
   getorders() {
     this.httpService.getorders().subscribe(
       (data: any[]) => {
@@ -103,8 +97,4 @@ export class DashbaordComponent implements OnInit{
       }
     );
   }
- 
- 
-  
-
 }

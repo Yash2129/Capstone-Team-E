@@ -18,10 +18,10 @@ export class RequestequipmentComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private httpService: HttpService) {
     this.itemForm = this.formBuilder.group({
-      orderDate: ['', [Validators.required]],  
-      quantity: ['', [Validators.required]], 
-      status: ['', [Validators.required]], 
-      equipmentId: ['', [Validators.required]], 
+      orderDate: ['', [Validators.required]],
+      quantity: ['', [Validators.required]],
+      status: ['', [Validators.required]],
+      equipmentId: ['', [Validators.required]],
       hospitalId: ['', [Validators.required]],
     });
   }
